@@ -1,4 +1,5 @@
-import { InferGetStaticPropsType, type NextPage } from "next";
+import type { InferGetStaticPropsType } from "next";
+import { type NextPage } from "next";
 import Head from "next/head";
 import type { ChangeEvent } from "react";
 import React from "react";
@@ -9,6 +10,9 @@ import type {
 } from "../server/books/models";
 
 export async function getStaticProps() {
+  if (!process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY) {
+    throw new Error("Missing Google Books API Key env variable");
+  }
   return { props: { googleKey: process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY } };
 }
 
@@ -28,10 +32,7 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
     null
   );
 
-  async function handleSubmit() {
-    if (!props.googleKey) {
-      return;
-    }
+  async function handleSearch() {
     setLoading(true);
     const data = await authorSearchGoogleVolumes(
       props.googleKey,
@@ -42,7 +43,6 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
 
     if (data?.items) {
       setResultsData(data);
-      console.log(data);
     } else {
       setResultsData({ items: [] });
     }
@@ -52,8 +52,24 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
     const item = resultsData.items?.find((x) => x.id === event.target.value);
     if (item) {
       setSelectedBookVolume(item);
+      setRating(null);
     }
   };
+
+  const starRatingInput = (position: number) => {
+    const checked = !!rating && rating <= position;
+    return (
+      <input
+        id={`${position}`}
+        type="checkbox"
+        className="mask mask-star-2 bg-orange-400"
+        onChange={() => setRating(position)}
+        checked={checked}
+      />
+    );
+  };
+
+  console.log(rating);
   return (
     <>
       <Head>
@@ -63,6 +79,7 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+          <h1> {rating}</h1>
           <h1 className="text-3xl font-medium tracking-tight text-white sm:text-[3rem]">
             Search for a book
           </h1>
@@ -97,7 +114,7 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                 />
                 <button
                   type="button"
-                  onClick={handleSubmit}
+                  onClick={handleSearch}
                   className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                 >
                   Search
@@ -110,9 +127,13 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                   </label>
                   <select
                     id="select-books"
-                    value={selectedVolume?.id}
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    value={selectedVolume?.id ?? ""}
                     onChange={onSelectedBookChange}
                   >
+                    <option key={"default"} value={""}>
+                      Select a book from the results
+                    </option>
                     {resultsData.items.map((item) => (
                       <option key={item.id} value={item.id}>
                         {`${item.volumeInfo?.title} ${item.volumeInfo?.authors?.[0]}`}
@@ -120,6 +141,15 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                     ))}
                   </select>
                 </>
+              )}
+              {selectedVolume?.id && (
+                <div className="rating">
+                  {starRatingInput(1)}
+                  {starRatingInput(2)}
+                  {starRatingInput(3)}
+                  {starRatingInput(4)}
+                  {starRatingInput(5)}
+                </div>
               )}
             </div>
           </form>
