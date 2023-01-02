@@ -5,7 +5,7 @@ import { router, publicProcedure } from "../trpc";
 export const booksRouter = router({
   newBookAndRating: publicProcedure
     .input(CreateNewBookAndRatingModel)
-    .query(({ input }) => {
+    .mutation(({ input }) => {
       return {
         response: CreateNewBookAndRating(input),
       };

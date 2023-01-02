@@ -1,5 +1,6 @@
 import type { InferGetStaticPropsType } from "next";
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import type { ChangeEvent } from "react";
 import React from "react";
@@ -8,6 +9,7 @@ import type {
   GoogleVolume,
   GoogleVolumesResponse,
 } from "../server/books/models";
+import { trpc } from "../utils/trpc";
 
 export async function getStaticProps() {
   if (!process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY) {
@@ -24,14 +26,17 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   const [resultsData, setResultsData] = React.useState<GoogleVolumesResponse>({
     items: [],
   });
-  const [selectedVolume, setSelectedBookVolume] =
-    React.useState<GoogleVolume | null>(null);
+  const [volume, setVolume] = React.useState<GoogleVolume | null>(null);
   const [rating, setRating] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [submitResponse, setSubmitResponse] = React.useState<string | null>(
     null
   );
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
+  const newBookAndRatingMutation = trpc.books.newBookAndRating.useMutation();
+  const submitDisabled = !volume || !rating || !userEmail;
   async function handleSearch() {
     setLoading(true);
     const data = await authorSearchGoogleVolumes(
@@ -48,28 +53,46 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
     }
   }
 
+  async function handleSaveRating() {
+    if (!submitDisabled) {
+      newBookAndRatingMutation.mutate({
+        userEmail,
+        volume,
+        rating,
+      });
+    }
+  }
+
   const onSelectedBookChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const item = resultsData.items?.find((x) => x.id === event.target.value);
     if (item) {
-      setSelectedBookVolume(item);
+      setVolume(item);
       setRating(null);
     }
   };
 
   const starRatingInput = (position: number) => {
-    const checked = !!rating && rating <= position;
+    const checked = !!rating && position <= rating;
     return (
-      <input
-        id={`${position}`}
-        type="checkbox"
-        className="mask mask-star-2 bg-orange-400"
-        onChange={() => setRating(position)}
-        checked={checked}
-      />
+      <div onClick={() => setRating(position)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={`h-6 w-6 text-yellow-300 ${checked ? "fill-current" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+          />
+        </svg>
+      </div>
     );
   };
 
-  console.log(rating);
   return (
     <>
       <Head>
@@ -128,7 +151,7 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                   <select
                     id="select-books"
                     className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    value={selectedVolume?.id ?? ""}
+                    value={volume?.id ?? ""}
                     onChange={onSelectedBookChange}
                   >
                     <option key={"default"} value={""}>
@@ -142,13 +165,22 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                   </select>
                 </>
               )}
-              {selectedVolume?.id && (
-                <div className="rating">
-                  {starRatingInput(1)}
-                  {starRatingInput(2)}
-                  {starRatingInput(3)}
-                  {starRatingInput(4)}
-                  {starRatingInput(5)}
+              {volume?.id && (
+                <div className="container flex flex-col items-center justify-center">
+                  <div className="inline-flex">
+                    {starRatingInput(1)}
+                    {starRatingInput(2)}
+                    {starRatingInput(3)}
+                    {starRatingInput(4)}
+                    {starRatingInput(5)}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSaveRating}
+                    className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                  >
+                    Save New Rating
+                  </button>
                 </div>
               )}
             </div>
