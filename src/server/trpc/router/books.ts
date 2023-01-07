@@ -5,9 +5,9 @@ import { router, publicProcedure } from "../trpc";
 export const booksRouter = router({
   newBookAndRating: publicProcedure
     .input(CreateNewBookAndRatingModel)
-    .mutation(({ input }) => {
+    .mutation(async ({ input }) => {
       return {
-        response: CreateNewBookAndRating(input),
+        response: await CreateNewBookAndRating(input),
       };
     }),
 });

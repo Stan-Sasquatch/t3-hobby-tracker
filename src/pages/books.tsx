@@ -32,10 +32,12 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   const [submitResponse, setSubmitResponse] = React.useState<string | null>(
     null
   );
+
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
-
   const newBookAndRatingMutation = trpc.books.newBookAndRating.useMutation();
+  const { isError, isSuccess, isLoading, error, data } =
+    newBookAndRatingMutation;
   const submitDisabled = !volume || !rating || !userEmail;
   async function handleSearch() {
     setLoading(true);
@@ -177,11 +179,16 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                   <button
                     type="button"
                     onClick={handleSaveRating}
+                    disabled={isLoading || submitDisabled}
                     className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                   >
                     Save New Rating
                   </button>
                 </div>
+              )}
+              {isError && <p>{error.message}</p>}
+              {isSuccess && (
+                <p>{`created rating of ${data.response.rating} for book: ${data.response.book.title}`}</p>
               )}
             </div>
           </form>
