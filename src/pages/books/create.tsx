@@ -38,8 +38,14 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
     enabled: false,
   });
 
-  const { isError, isSuccess, isLoading, error, data } =
-    newBookAndRatingMutation;
+  const {
+    isError,
+    isSuccess,
+    isLoading,
+    error,
+    data: response,
+  } = newBookAndRatingMutation;
+
   const submitDisabled = !volume || !rating || !userEmail;
   function handleSearch() {
     googleVolumeSearch.refetch();
@@ -179,10 +185,10 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                 </div>
               )}
               {isError && <p>{error.message}</p>}
-              {isSuccess && data.response.data ? (
-                <p>{`created rating of ${data.response.data.rating} for book: ${data.response.data.book.title}`}</p>
+              {isSuccess && response.data ? (
+                <p>{`created rating of ${response.data.rating} for book: ${response.data.book.title}`}</p>
               ) : (
-                <p>{data?.response.error}</p>
+                <p>{response?.error}</p>
               )}
             </div>
           </form>
