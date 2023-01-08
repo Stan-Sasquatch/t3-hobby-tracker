@@ -1,19 +1,19 @@
 import type { Book, BookRating } from "@prisma/client";
 import type { CreateNewBookAndRatingModel } from "../models";
 import { prisma } from "../../db/client";
+import type { ResponseModel } from "../../common/models";
 
 export const CreateNewBookAndRating = async (
   model: CreateNewBookAndRatingModel
-): Promise<BookRating & { book: Book }> => {
+): Promise<ResponseModel<BookRating & { book: Book }>> => {
   const { userEmail, volume, rating } = model;
   const author = volume?.volumeInfo?.authors?.[0];
   const title = volume?.volumeInfo?.title;
   if (!author || !title) {
-    return Promise.reject(
-      new Error(
-        "Can't create a rating for a book that is missing an author or title"
-      )
-    );
+    return {
+      error:
+        "Can't create a rating for a book that is missing an author or title",
+    };
   }
 
   const user = await prisma.user.findUnique({
@@ -23,7 +23,9 @@ export const CreateNewBookAndRating = async (
   });
 
   if (!user) {
-    return Promise.reject(new Error("No user Id to assign the rating to"));
+    return {
+      error: "No user Id to assign the rating to",
+    };
   }
 
   const existingBook = await prisma.book.findUnique({
@@ -52,9 +54,9 @@ export const CreateNewBookAndRating = async (
     });
 
     if (existingRating) {
-      return Promise.reject(
-        new Error("User already has a rating for this book")
-      );
+      return {
+        error: "User already has a rating for this book",
+      };
     }
     console.log("Skipping creating this book as it already exists");
   } else {
@@ -75,5 +77,5 @@ export const CreateNewBookAndRating = async (
       userId,
     },
   });
-  return { ...ratingResponse, book };
+  return { data: { ...ratingResponse, book } };
 };

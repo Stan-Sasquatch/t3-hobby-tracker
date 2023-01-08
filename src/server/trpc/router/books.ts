@@ -10,4 +10,10 @@ export const booksRouter = router({
         response: await CreateNewBookAndRating(input),
       };
     }),
+  getAllBooks: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.bookRating.findMany({
+      include: { book: true },
+      orderBy: { createdAt: "desc" },
+    });
+  }),
 });
