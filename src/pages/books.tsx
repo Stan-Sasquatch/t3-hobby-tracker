@@ -4,7 +4,7 @@ import React from "react";
 import { trpc } from "../utils/trpc";
 
 const Books: NextPage = () => {
-  const allBooks = trpc.books.getAllBooks.useQuery();
+  const allBooks = trpc.books.getAllRatings.useQuery();
 
   return (
     <>
@@ -38,7 +38,9 @@ const Books: NextPage = () => {
                     <td className="w-3/12 border-2 border-white">
                       {b.book.author}
                     </td>
-                    <td className="w-2/12 border-2 border-white">{b.rating}</td>
+                    <td className="w-2/12 border-2 border-white text-center">
+                      {b.rating}
+                    </td>
                   </tr>
                 ))}
             </tbody>

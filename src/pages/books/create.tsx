@@ -16,7 +16,7 @@ export async function getStaticProps() {
   return { props: { googleKey: process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY } };
 }
 
-const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
+const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   props
 ) => {
   const [authorSearchText, setAuthorSearchText] = React.useState<string>("");
@@ -192,4 +192,4 @@ const Books: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   );
 };
 
-export default Books;
+export default Create;
