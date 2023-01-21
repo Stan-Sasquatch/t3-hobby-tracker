@@ -13,8 +13,13 @@ export const booksRouter = router({
         error,
       };
     }),
-  getAllRatings: publicProcedure.query(({ ctx }) => {
+  getAllUserRatings: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.bookRating.findMany({
+      where: {
+        user: {
+          id: ctx.session?.user?.id,
+        },
+      },
       include: { book: true },
       orderBy: { createdAt: "desc" },
     });

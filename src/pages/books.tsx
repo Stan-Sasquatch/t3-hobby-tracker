@@ -8,7 +8,7 @@ import { trpc } from "../utils/trpc";
 const Books: NextPage = () => {
   const { data: sessionData } = useSession();
   useRequireAuth();
-  const allBooks = trpc.books.getAllRatings.useQuery();
+  const allBooks = trpc.books.getAllUserRatings.useQuery();
 
   if (!sessionData) {
     return <h1>Loading...</h1>;
