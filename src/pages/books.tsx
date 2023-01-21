@@ -1,9 +1,18 @@
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
+import useRequireAuth from "../auth/useRequireAuth";
 import { trpc } from "../utils/trpc";
 
 const Books: NextPage = () => {
+  const { data: sessionData } = useSession();
+  useRequireAuth();
+
+  if (!sessionData) {
+    return <h1>Loading...</h1>;
+  }
+
   const allBooks = trpc.books.getAllRatings.useQuery();
 
   return (
