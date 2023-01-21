@@ -101,7 +101,6 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1> {rating}</h1>
           <h1 className="text-3xl font-medium tracking-tight text-white sm:text-[3rem]">
             Search for a book
           </h1>

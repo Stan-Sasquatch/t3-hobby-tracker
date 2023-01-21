@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
 import React from "react";
 import useRequireAuth from "../auth/useRequireAuth";
 import { trpc } from "../utils/trpc";
@@ -22,6 +23,9 @@ const Books: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+          <h1 className="text-3xl font-medium tracking-tight text-white sm:text-[3rem]">
+            Your Book Ratings
+          </h1>
           <table className="w-3/6 border-2 border-white bg-purple-200 bg-opacity-25 text-white sm:text-[1rem]">
             <thead>
               <tr>
@@ -38,10 +42,12 @@ const Books: NextPage = () => {
                     className="hover:bg-purple-100 hover:text-gray-500"
                   >
                     <td
-                      className="max-h-8 w-5/12 max-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap border-2 border-white"
+                      className="max-h-8 w-5/12 max-w-0 border-2 border-white lg:overflow-hidden lg:overflow-ellipsis lg:whitespace-nowrap"
                       title={b.book.title}
                     >
-                      {b.book.title}
+                      <Link className={"underline"} href={`books/${b.bookId}`}>
+                        {b.book.title}
+                      </Link>
                     </td>
                     <td className="w-3/12 border-2 border-white">
                       {b.book.author}
