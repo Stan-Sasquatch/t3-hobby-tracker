@@ -8,7 +8,7 @@ export const booksNavigation: Navigation<bookRoutes> = {
     title: "New Rating",
   },
   All: {
-    path: "/",
+    path: "",
     title: "All Book Ratings",
   },
 };
