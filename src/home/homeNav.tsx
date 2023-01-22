@@ -4,7 +4,7 @@ import { homeNavigation } from "./models";
 
 export default function HomeNav({ children }: WrapperProps) {
   return (
-    <Navbar navigation={homeNavigation} pathname="">
+    <Navbar navigation={homeNavigation} pathname="" includeHome={false}>
       {children}
     </Navbar>
   );
