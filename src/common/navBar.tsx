@@ -31,8 +31,6 @@ export default function Navbar<T extends string>({
               const selected =
                 router.asPath === pathname + navigation[key].path;
 
-              console.log(pathname + navigation[key].path);
-              console.log(router.asPath);
               return (
                 <li
                   className={`m-4 inline rounded-lg ${

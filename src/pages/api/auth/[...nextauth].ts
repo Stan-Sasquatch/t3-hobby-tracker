@@ -5,9 +5,11 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
+import initialiseConnections from "../../../server/common/commands/initialiseConnections";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
+
   callbacks: {
     session({ session, user }) {
       if (session.user) {
@@ -16,6 +18,14 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  events: {
+    async signIn(message) {
+      if (message.isNewUser) {
+        initialiseConnections(message.user.id);
+      }
+    },
+  },
+
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
