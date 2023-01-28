@@ -14,7 +14,6 @@ export const homeNavigation: Navigation<homeRoutes> = {
   Connections: {
     path: "/connections",
     title: "Connections",
-    disabled: true,
   },
   Exercise: {
     path: "/exercise",

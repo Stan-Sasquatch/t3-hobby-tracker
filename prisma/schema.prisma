@@ -100,12 +100,12 @@ model Friend {
 
 model FriendRequest {
   id        String      @id @default(cuid())
-  user_id   String
-  friend_id String
-  user      User    @relation(name: "user_requests", fields: [user_id], references: [id])
-  friend    User    @relation(name: "friend_user_requests", fields: [friend_id], references: [id])
+  fromUserId   String
+  toUserId String
+  fromUser      User    @relation(name: "user_requests", fields: [fromUserId], references: [id])
+  toUser    User    @relation(name: "friend_user_requests", fields: [toUserId], references: [id])
   status FriendRequestStatus
-  @@unique([user_id, friend_id])
+  @@unique([fromUserId, toUserId])
 }
 
 enum FriendRequestStatus {
