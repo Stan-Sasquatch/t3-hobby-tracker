@@ -1,13 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
-
-import { trpc } from "../utils/trpc";
 import HomeNav from "../home/homeNav";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from Stan" });
-
   return (
     <>
       <Head>
@@ -21,9 +17,7 @@ const Home: NextPage = () => {
             </h1>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8"></div>
             <div className="flex flex-col items-center gap-2">
-              <p className="text-2xl text-white">
-                {hello.data ? hello.data.greeting : "Loading..."}
-              </p>
+              <p className="text-2xl text-white">Hello from Stan</p>
               <Login />
             </div>
           </div>
