@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import useRequireAuth from "../auth/useRequireAuth";
 import ConnectionsNav from "../connections/connectionsNav";
+import Image from "next/image";
 
 const Connections: NextPage = () => {
   const session = useRequireAuth();
@@ -22,6 +23,12 @@ const Connections: NextPage = () => {
             <h1 className="text-3xl font-medium tracking-tight text-white sm:text-[3rem]">
               Friends
             </h1>
+            <Image
+              src="/you-dont-have-any-friends-lotr.gif"
+              alt="you don't have any friends!"
+              width="498"
+              height="209"
+            />
           </div>
         </main>
       </ConnectionsNav>
