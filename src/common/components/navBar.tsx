@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import type { Navigation, WrapperProps } from "./models";
+import type { Navigation, WrapperProps } from "../models";
 
 interface NavbarProps<T extends string> {
   pathname: string;
