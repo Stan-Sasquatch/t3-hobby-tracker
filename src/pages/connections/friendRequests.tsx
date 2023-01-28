@@ -1,17 +1,33 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import React from "react";
 import useRequireAuth from "../../auth/useRequireAuth";
 import ConnectionsNav from "../../connections/connectionsNav";
+import type { CompleteStatusEnum } from "../../connections/models";
 import { trpc } from "../../utils/trpc";
 
 const FriendRequests: NextPage = () => {
   const session = useRequireAuth();
-  const allFriendRequestsForUser =
+  const { isSuccess, data } =
     trpc.friendRequests.getAllFriendRequests.useQuery();
+  const utils = trpc.useContext();
+  utils.friendRequests.getAllFriendRequests.invalidate();
+
+  const newBookAndRatingMutation =
+    trpc.friendRequests.updatePendingRequest.useMutation({
+      onSuccess() {
+        utils.friendRequests.getAllFriendRequests.invalidate();
+      },
+    });
+
+  const [currentRequestStatus, setCurrentRequestStatus] =
+    React.useState<CompleteStatusEnum | null>(null);
 
   if (!session) {
     return <h1>Loading...</h1>;
   }
+  const showPendingColumn =
+    isSuccess && data.some((x) => x.status === "PENDING");
 
   return (
     <>
@@ -31,11 +47,14 @@ const FriendRequests: NextPage = () => {
                   <th className="w-4/12 border-2 border-white">Sender</th>
                   <th className="w-4/12 border-2 border-white">Recipient</th>
                   <th className="w-4/12 border-2 border-white">Status</th>
+                  {showPendingColumn && (
+                    <th className="w-4/12 border-2 border-white">Actions</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
-                {allFriendRequestsForUser.isSuccess &&
-                  allFriendRequestsForUser.data.map((r) => (
+                {isSuccess &&
+                  data.map((r) => (
                     <tr
                       key={r.id}
                       className="hover:bg-purple-100 hover:text-gray-500"
@@ -49,6 +68,16 @@ const FriendRequests: NextPage = () => {
                       <td className="w-4/12 border-2 border-white text-center">
                         {r.status}
                       </td>
+                      {showPendingColumn && (
+                        <td className="w-4/12 border-2 border-white text-center">
+                          {r.status === "PENDING" &&
+                          r.toUserId === session.user?.id ? (
+                            <>{/* Make a dialog */}</>
+                          ) : (
+                            <></>
+                          )}
+                        </td>
+                      )}
                     </tr>
                   ))}
               </tbody>
