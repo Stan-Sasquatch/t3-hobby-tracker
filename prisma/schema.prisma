@@ -81,11 +81,38 @@ model User {
   accounts      Account[]
   sessions      Session[]
   ratings       BookRating[]
-  friends         User[] @relation("friends")
-  friendsRelation User[] @relation("friends")
+  userFriends        Friend[] @relation("users")
+  friendUserFriends  Friend[] @relation("friend_users")
+  userFriendRequests        FriendRequest[] @relation("user_requests")
+  friendUserFriendRequests  FriendRequest[] @relation("friend_user_requests")
   lastLoginDate DateTime?
 }
 
+model Friend {
+  id        String      @id @default(cuid())
+  user_id   String
+  friend_id String
+  user      User    @relation(name: "users", fields: [user_id], references: [id])
+  friend    User    @relation(name: "friend_users", fields: [friend_id], references: [id])
+
+  @@unique([user_id, friend_id])
+}
+
+model FriendRequest {
+  id        String      @id @default(cuid())
+  user_id   String
+  friend_id String
+  user      User    @relation(name: "user_requests", fields: [user_id], references: [id])
+  friend    User    @relation(name: "friend_user_requests", fields: [friend_id], references: [id])
+  status FriendRequestStatus
+  @@unique([user_id, friend_id])
+}
+
+enum FriendRequestStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
 
 model VerificationToken {
   identifier String

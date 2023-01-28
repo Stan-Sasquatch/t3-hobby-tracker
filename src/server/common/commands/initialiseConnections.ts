@@ -1,14 +1,13 @@
 import { prisma } from "../../db/client";
 
-export default async function initialiseConnections(id: string) {
+export default async function initialiseConnections(user_id: string) {
   console.log("initialising connection for new user");
-  // initialise every new user with Stephen Percival as a connection!
-  await prisma.user.update({
-    where: {
-      id,
-    },
+
+  await prisma.friendRequest.create({
     data: {
-      connections: { set: [{ id: "cld7tzqaf000008l2bpb3azz8" }] },
+      user_id,
+      friend_id: "cldfvs3zo0000sokwz9zpg6ys",
+      status: "PENDING",
     },
   });
 }
