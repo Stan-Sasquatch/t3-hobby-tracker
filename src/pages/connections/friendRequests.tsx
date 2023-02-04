@@ -61,42 +61,37 @@ const FriendRequests: NextPage = () => {
               </thead>
               <tbody>
                 {isSuccess &&
-                  data.map((r) => {
-                    console.log(r.status);
-                    console.log(r.toUserId);
-                    console.log(session.user?.id);
-                    return (
-                      <tr key={r.id}>
-                        <td className="max-h-8 w-4/12 border-2 border-white text-center">
-                          {r.fromUser.name}
-                        </td>
+                  data.map((r) => (
+                    <tr key={r.id}>
+                      <td className="max-h-8 w-4/12 border-2 border-white text-center">
+                        {r.fromUser.name}
+                      </td>
+                      <td className="w-4/12 border-2 border-white text-center">
+                        {r.toUser.name}
+                      </td>
+                      <td className="w-4/12 border-2 border-white text-center">
+                        {r.status}
+                      </td>
+                      {showPendingColumn && (
                         <td className="w-4/12 border-2 border-white text-center">
-                          {r.toUser.name}
+                          <div className="flex">
+                            <button
+                              onClick={onAccept(r.id)}
+                              className="m-3 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                            >
+                              Accept
+                            </button>
+                            <button
+                              onClick={onReject(r.id)}
+                              className="m-3 rounded bg-gray-500 py-2 px-4 font-bold text-black hover:bg-gray-700"
+                            >
+                              Reject
+                            </button>
+                          </div>
                         </td>
-                        <td className="w-4/12 border-2 border-white text-center">
-                          {r.status}
-                        </td>
-                        {showPendingColumn && (
-                          <td className="w-4/12 border-2 border-white text-center">
-                            <div className="flex">
-                              <button
-                                onClick={onAccept(r.id)}
-                                className="m-3 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                              >
-                                Accept
-                              </button>
-                              <button
-                                onClick={onReject(r.id)}
-                                className="m-3 rounded bg-gray-500 py-2 px-4 font-bold text-black hover:bg-gray-700"
-                              >
-                                Reject
-                              </button>
-                            </div>
-                          </td>
-                        )}
-                      </tr>
-                    );
-                  })}
+                      )}
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
