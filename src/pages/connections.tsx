@@ -28,7 +28,24 @@ const Connections: NextPage = () => {
             {isSuccess && (
               <>
                 {data.some((x) => x) ? (
-                  <>{data.map((x) => x.friend.name)}</>
+                  <table className="border-white bg-purple-200 bg-opacity-25 text-white sm:text-[1rem]">
+                    {data.map((x) => (
+                      <tr key={x.friend_id}>
+                        <td>
+                          <div className="flex items-center">
+                            <Image
+                              className="rounded-full"
+                              src={x.friend.image ?? ""}
+                              alt={`${x.friend.name}'s avatar `}
+                              width="50"
+                              height="50"
+                            />
+                            <div className="mx-2.5">{x.friend.name}</div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </table>
                 ) : (
                   <Image
                     src="/you-dont-have-any-friends-lotr.gif"
