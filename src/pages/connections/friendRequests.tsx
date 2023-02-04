@@ -3,7 +3,6 @@ import Head from "next/head";
 import React from "react";
 import useRequireAuth from "../../auth/useRequireAuth";
 import ConnectionsNav from "../../connections/connectionsNav";
-import type { CompleteStatusEnum } from "../../connections/models";
 import { trpc } from "../../utils/trpc";
 
 const FriendRequests: NextPage = () => {
@@ -11,23 +10,31 @@ const FriendRequests: NextPage = () => {
   const { isSuccess, data } =
     trpc.friendRequests.getAllFriendRequests.useQuery();
   const utils = trpc.useContext();
-  utils.friendRequests.getAllFriendRequests.invalidate();
 
-  const newBookAndRatingMutation =
-    trpc.friendRequests.updatePendingRequest.useMutation({
-      onSuccess() {
-        utils.friendRequests.getAllFriendRequests.invalidate();
-      },
-    });
+  const friendRequest = trpc.friendRequests.updatePendingRequest.useMutation({
+    onSuccess() {
+      utils.friendRequests.getAllFriendRequests.invalidate();
+    },
+  });
 
-  const [currentRequestStatus, setCurrentRequestStatus] =
-    React.useState<CompleteStatusEnum | null>(null);
+  function onAccept(id: string) {
+    return function () {
+      friendRequest.mutate({ id, status: "CONFIRMED" });
+    };
+  }
+
+  function onReject(id: string) {
+    return function () {
+      friendRequest.mutate({ id, status: "REJECTED" });
+    };
+  }
 
   if (!session) {
     return <h1>Loading...</h1>;
   }
   const showPendingColumn =
-    isSuccess && data.some((x) => x.status === "PENDING");
+    isSuccess &&
+    data.some((x) => x.status === "PENDING" && x.toUserId === session.user?.id);
 
   return (
     <>
@@ -54,32 +61,42 @@ const FriendRequests: NextPage = () => {
               </thead>
               <tbody>
                 {isSuccess &&
-                  data.map((r) => (
-                    <tr
-                      key={r.id}
-                      className="hover:bg-purple-100 hover:text-gray-500"
-                    >
-                      <td className="max-h-8 w-4/12 border-2 border-white">
-                        {r.fromUser.name}
-                      </td>
-                      <td className="w-4/12 border-2 border-white">
-                        {r.toUser.name}
-                      </td>
-                      <td className="w-4/12 border-2 border-white text-center">
-                        {r.status}
-                      </td>
-                      {showPendingColumn && (
-                        <td className="w-4/12 border-2 border-white text-center">
-                          {r.status === "PENDING" &&
-                          r.toUserId === session.user?.id ? (
-                            <>{/* Make a dialog */}</>
-                          ) : (
-                            <></>
-                          )}
+                  data.map((r) => {
+                    console.log(r.status);
+                    console.log(r.toUserId);
+                    console.log(session.user?.id);
+                    return (
+                      <tr key={r.id}>
+                        <td className="max-h-8 w-4/12 border-2 border-white text-center">
+                          {r.fromUser.name}
                         </td>
-                      )}
-                    </tr>
-                  ))}
+                        <td className="w-4/12 border-2 border-white text-center">
+                          {r.toUser.name}
+                        </td>
+                        <td className="w-4/12 border-2 border-white text-center">
+                          {r.status}
+                        </td>
+                        {showPendingColumn && (
+                          <td className="w-4/12 border-2 border-white text-center">
+                            <div className="flex">
+                              <button
+                                onClick={onAccept(r.id)}
+                                className="m-3 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                              >
+                                Accept
+                              </button>
+                              <button
+                                onClick={onReject(r.id)}
+                                className="m-3 rounded bg-gray-500 py-2 px-4 font-bold text-black hover:bg-gray-700"
+                              >
+                                Reject
+                              </button>
+                            </div>
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
