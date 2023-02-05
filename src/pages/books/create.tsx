@@ -162,11 +162,17 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                         <option key={"default"} value={""}>
                           Select a book from the results
                         </option>
-                        {googleVolumeSearch.data.items.map((item) => (
-                          <option key={item.id} value={item.id}>
-                            {`${item.volumeInfo?.title} ${item.volumeInfo?.authors?.[0]}`}
-                          </option>
-                        ))}
+                        {googleVolumeSearch.data.items
+                          .filter(
+                            (item) =>
+                              item.volumeInfo?.title &&
+                              item.volumeInfo?.authors?.[0]
+                          )
+                          .map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {`${item.volumeInfo?.title} by ${item.volumeInfo?.authors?.[0]}`}
+                            </option>
+                          ))}
                       </select>
                     </>
                   )}
@@ -189,14 +195,16 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                     </button>
                   </div>
                 )}
-                {isError && <p>{error.message}</p>}
-                {isSuccess && response.data ? (
-                  <p>{`created rating of ${response.data.rating} for book: ${response.data.book.title}`}</p>
-                ) : (
-                  <p>{response?.error}</p>
-                )}
               </div>
             </form>
+            <div className="text-center font-bold text-white">
+              {isError && <p>{error.message}</p>}
+              {isSuccess && response.data ? (
+                <p>{`created rating of ${response.data.rating} for book: ${response.data.book.title}`}</p>
+              ) : (
+                <p>{response?.error}</p>
+              )}
+            </div>
           </div>
         </main>
       </BooksNav>
