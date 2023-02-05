@@ -9,7 +9,7 @@ import { trpc } from "../utils/trpc";
 const Books: NextPage = () => {
   const sessionData = useRequireAuth();
   const allBooks = trpc.books.getAllUserRatings.useQuery();
-  
+
   if (!sessionData) {
     return <h1>Loading...</h1>;
   }
@@ -35,31 +35,42 @@ const Books: NextPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {allBooks.isSuccess &&
-                  allBooks.data.map((b) => (
-                    <tr
-                      key={b.id}
-                      className="hover:bg-purple-100 hover:text-gray-500"
-                    >
-                      <td
-                        className="max-h-8 w-5/12 max-w-0 border-2 border-white lg:overflow-hidden lg:overflow-ellipsis lg:whitespace-nowrap"
-                        title={b.book.title}
-                      >
-                        <Link
-                          className={"underline"}
-                          href={`books/${b.bookId}`}
+                {allBooks.isSuccess && (
+                  <>
+                    {allBooks.data.some((x) => x) ? (
+                      allBooks.data.map((b) => (
+                        <tr
+                          key={b.id}
+                          className="hover:bg-purple-100 hover:text-gray-500"
                         >
-                          {b.book.title}
-                        </Link>
-                      </td>
-                      <td className="w-3/12 border-2 border-white">
-                        {b.book.author}
-                      </td>
-                      <td className="w-2/12 border-2 border-white text-center">
-                        {b.rating}
-                      </td>
-                    </tr>
-                  ))}
+                          <td
+                            className="max-h-8 w-5/12 max-w-0 border-2 border-white lg:overflow-hidden lg:overflow-ellipsis lg:whitespace-nowrap"
+                            title={b.book.title}
+                          >
+                            <Link
+                              className={"underline"}
+                              href={`books/${b.bookId}`}
+                            >
+                              {b.book.title}
+                            </Link>
+                          </td>
+                          <td className="w-3/12 border-2 border-white">
+                            {b.book.author}
+                          </td>
+                          <td className="w-2/12 border-2 border-white text-center">
+                            {b.rating}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td className="text-center" colSpan={3}>
+                          No Ratings Yet!
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                )}
               </tbody>
             </table>
           </div>
