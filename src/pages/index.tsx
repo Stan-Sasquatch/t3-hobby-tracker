@@ -1,9 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
 import HomeNav from "../home/homeNav";
+import useRequireAuth from "../auth/useRequireAuth";
 
 const Home: NextPage = () => {
+  useRequireAuth();
   return (
     <>
       <Head>
@@ -18,7 +19,7 @@ const Home: NextPage = () => {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8"></div>
             <div className="flex flex-col items-center gap-2">
               <p className="text-2xl text-white">Hello from Stan</p>
-              <Login />
+              <p className="text-2xl text-white">This is the actual homepage</p>
             </div>
           </div>
         </main>
@@ -28,21 +29,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-const Login: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => signOut() : () => signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};

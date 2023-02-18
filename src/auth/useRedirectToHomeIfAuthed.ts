@@ -2,16 +2,16 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-function useRequireAuth() {
+function useRedirectToHomeIfAuthed() {
   const { data: sessionData } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (!sessionData && typeof sessionData != "undefined") {
-      router.push(`/signIn`);
+    if (sessionData) {
+      router.push(`/`);
     }
   }, [sessionData, router]);
 
   return sessionData;
 }
-export default useRequireAuth;
+export default useRedirectToHomeIfAuthed;

@@ -32,7 +32,7 @@ const FriendRequests: NextPage = () => {
   if (!session) {
     return <h1>Loading...</h1>;
   }
-  const showPendingColumn =
+  const showActionColumn =
     isSuccess &&
     data.some((x) => x.status === "PENDING" && x.toUserId === session.user?.id);
 
@@ -54,7 +54,7 @@ const FriendRequests: NextPage = () => {
                   <th className="w-4/12 border-2 border-white">Sender</th>
                   <th className="w-4/12 border-2 border-white">Recipient</th>
                   <th className="w-4/12 border-2 border-white">Status</th>
-                  {showPendingColumn && (
+                  {showActionColumn && (
                     <th className="w-4/12 border-2 border-white">Actions</th>
                   )}
                 </tr>
@@ -72,7 +72,7 @@ const FriendRequests: NextPage = () => {
                       <td className="w-4/12 border-2 border-white text-center">
                         {r.status}
                       </td>
-                      {showPendingColumn && (
+                      {showActionColumn && (
                         <td className="w-4/12 border-2 border-white text-center">
                           <div className="flex">
                             <button

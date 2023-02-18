@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import type { Navigation, WrapperProps } from "../models";
 import Image from "next/image";
+import Login from "./login";
 
 interface NavbarProps<T extends string> {
   pathname: string;
@@ -37,13 +38,17 @@ export default function Navbar<T extends string>({
               </span>
             </div>
           )}
-          {includeHome && (
-            <div className="inline rounded-lg bg-pink-400 bg-opacity-25 px-3">
-              <Link href="/">Home</Link>
-            </div>
-          )}
+          <Login sessionData={sessionData} />
         </div>
         <ul className="flex w-2/3 items-center justify-center bg-[#3f1d6f] text-white">
+          {includeHome && (
+            <li
+              key="home"
+              className="m-4 inline rounded-lg bg-pink-400 bg-opacity-25 px-3"
+            >
+              <Link href="/">Home</Link>
+            </li>
+          )}
           {(Object.keys(navigation) as Array<keyof typeof navigation>).map(
             (key) => {
               const disabled = navigation[key]?.disabled ?? false;
