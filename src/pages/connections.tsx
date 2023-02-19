@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import useRequireAuth from "../auth/useRequireAuth";
-import ConnectionsNav from "../connections/connectionsNav";
+import ConnectionsNav from "../crud/connections/connectionsNav";
 import Image from "next/image";
 import { trpc } from "../utils/trpc";
 

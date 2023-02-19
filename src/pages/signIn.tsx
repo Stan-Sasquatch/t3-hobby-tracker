@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import useRedirectToHomeIfAuthed from "../auth/useRedirectToHomeIfAuthed";
-import Login from "../common/components/login";
+import Login from "../crud/common/components/login";
 
 const SignIn: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -23,6 +23,11 @@ const SignIn: NextPage = () => {
             <Login sessionData={sessionData} />
             <p className="text-2xl text-white">
               Please sign in using the button above
+            </p>
+            <p className="text-lg text-white">
+              Without signing in You won&apos;t be able to track your hobbies or
+              connect with friends to view theirs. However you can still view my
+              recent activities <span className="underline">here!</span>
             </p>
           </div>
         </div>

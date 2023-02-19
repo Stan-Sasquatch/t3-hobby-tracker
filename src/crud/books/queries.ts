@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GoogleVolumesResponse } from "../server/books/models";
+import { GoogleVolumesResponse } from "../../server/books/models";
 import { googleVolumeQueryTypes } from "./models";
 
 export async function authorSearchGoogleVolumes(

@@ -1,5 +1,5 @@
 import { router, publicProcedure } from "../trpc";
-import { CompleteStatusEnum } from "../../../connections/models";
+import { CompleteStatusEnum } from "../../../crud/connections/models";
 import { z } from "zod";
 import { handleFriendRequestUpdate } from "../../connections/commands/handleFriendRequestUpdate";
 

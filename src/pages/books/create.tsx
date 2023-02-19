@@ -5,8 +5,8 @@ import Head from "next/head";
 import type { ChangeEvent } from "react";
 import React from "react";
 import useRequireAuth from "../../auth/useRequireAuth";
-import BooksNav from "../../books/booksNav";
-import { authorSearchGoogleVolumes } from "../../books/queries";
+import BooksNav from "../../crud/books/booksNav";
+import { authorSearchGoogleVolumes } from "../../crud/books/queries";
 import type { GoogleVolume } from "../../server/books/models";
 import { trpc } from "../../utils/trpc";
 

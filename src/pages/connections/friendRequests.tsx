@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import useRequireAuth from "../../auth/useRequireAuth";
-import ConnectionsNav from "../../connections/connectionsNav";
+import ConnectionsNav from "../../crud/connections/connectionsNav";
 import { trpc } from "../../utils/trpc";
 
 const FriendRequests: NextPage = () => {

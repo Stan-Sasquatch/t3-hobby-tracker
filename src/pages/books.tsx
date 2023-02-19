@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 import useRequireAuth from "../auth/useRequireAuth";
-import BooksNav from "../books/booksNav";
+import BooksNav from "../crud/books/booksNav";
 import { trpc } from "../utils/trpc";
 
 const Books: NextPage = () => {
