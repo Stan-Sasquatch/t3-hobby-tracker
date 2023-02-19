@@ -1,9 +1,20 @@
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure } from "../../trpc/trpc";
 import { CompleteStatusEnum } from "../../../crud/connections/models";
 import { z } from "zod";
-import { handleFriendRequestUpdate } from "../../connections/commands/handleFriendRequestUpdate";
+import { handleFriendRequestUpdate } from "./commands/handleFriendRequestUpdate";
 
-export const friendRequestsRouter = router({
+export const connectionsRouter = router({
+  getAllFriendsForUser: publicProcedure.query(({ ctx }) => {
+    const user_id = ctx.session?.user?.id;
+    return ctx.prisma.friend.findMany({
+      where: {
+        user_id,
+      },
+      include: {
+        friend: true,
+      },
+    });
+  }),
   getAllFriendRequests: publicProcedure.query(({ ctx }) => {
     const id = ctx.session?.user?.id;
     return ctx.prisma.friendRequest.findMany({

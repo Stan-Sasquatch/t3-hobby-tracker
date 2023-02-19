@@ -7,7 +7,7 @@ import { trpc } from "../utils/trpc";
 
 const Connections: NextPage = () => {
   const session = useRequireAuth();
-  const { isSuccess, data } = trpc.friends.getAllFriendsForUser.useQuery();
+  const { isSuccess, data } = trpc.connections.getAllFriendsForUser.useQuery();
   if (!session) {
     return <h1>Loading...</h1>;
   }

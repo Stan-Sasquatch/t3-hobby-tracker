@@ -1,6 +1,6 @@
 import type { Book, BookRating } from "@prisma/client";
 import type { CreateNewBookAndRatingModel } from "../models";
-import { prisma } from "../../db/client";
+import { prisma } from "../../../db/client";
 import type { ResponseModel } from "../../common/models";
 
 export const CreateNewBookAndRating = async (

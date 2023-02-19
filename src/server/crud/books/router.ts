@@ -1,6 +1,6 @@
-import { CreateNewBookAndRating } from "../../books/commands/createNewBookAndRating";
-import { CreateNewBookAndRatingModel } from "../../books/models";
-import { router, publicProcedure } from "../trpc";
+import { CreateNewBookAndRating } from "./commands/createNewBookAndRating";
+import { CreateNewBookAndRatingModel } from "./models";
+import { router, publicProcedure } from "../../trpc/trpc";
 import { z } from "zod";
 
 export const booksRouter = router({

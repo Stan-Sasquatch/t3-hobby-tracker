@@ -1,14 +1,12 @@
 import { router } from "../trpc";
-import { authRouter } from "./auth";
-import { booksRouter } from "./books";
-import { friendRequestsRouter } from "./friendRequests";
-import { friendsRouter } from "./friends";
+import { booksRouter } from "../../crud/books/router";
+import { connectionsRouter } from "../../crud/connections/router";
+import { usersRouter } from "../../crud/users/router";
 
 export const appRouter = router({
-  auth: authRouter,
   books: booksRouter,
-  friendRequests: friendRequestsRouter,
-  friends: friendsRouter,
+  connections: connectionsRouter,
+  users: usersRouter,
 });
 
 // export type definition of API

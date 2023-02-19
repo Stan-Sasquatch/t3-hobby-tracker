@@ -7,7 +7,7 @@ import React from "react";
 import useRequireAuth from "../../auth/useRequireAuth";
 import BooksNav from "../../crud/books/booksNav";
 import { authorSearchGoogleVolumes } from "../../crud/books/queries";
-import type { GoogleVolume } from "../../server/books/models";
+import type { GoogleVolume } from "../../server/crud/books/models";
 import { trpc } from "../../utils/trpc";
 
 export async function getStaticProps() {

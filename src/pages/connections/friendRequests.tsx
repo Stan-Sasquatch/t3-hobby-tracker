@@ -7,13 +7,12 @@ import { trpc } from "../../utils/trpc";
 
 const FriendRequests: NextPage = () => {
   const session = useRequireAuth();
-  const { isSuccess, data } =
-    trpc.friendRequests.getAllFriendRequests.useQuery();
+  const { isSuccess, data } = trpc.connections.getAllFriendRequests.useQuery();
   const utils = trpc.useContext();
 
-  const friendRequest = trpc.friendRequests.updatePendingRequest.useMutation({
+  const friendRequest = trpc.connections.updatePendingRequest.useMutation({
     onSuccess() {
-      utils.friendRequests.getAllFriendRequests.invalidate();
+      utils.connections.getAllFriendRequests.invalidate();
     },
   });
 
