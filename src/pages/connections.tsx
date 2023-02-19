@@ -32,7 +32,7 @@ const Connections: NextPage = () => {
                     {data.map((x) => (
                       <tr key={x.friend_id}>
                         <td>
-                          <div className="flex items-center">
+                          <div className="flex items-center px-32 py-4">
                             <Image
                               className="rounded-full"
                               src={x.friend.image ?? ""}
