@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
 import BookRatingsTable from "../crud/books/bookRatingsTable";
@@ -7,12 +6,7 @@ import BooksNav from "../crud/books/booksNav";
 import { trpc } from "../utils/trpc";
 
 const Books: NextPage = () => {
-  const sessionData = useSession();
   const allBookRatings = trpc.books.getAllUserRatings.useQuery();
-
-  if (!sessionData) {
-    return <h1>Loading...</h1>;
-  }
 
   return (
     <>

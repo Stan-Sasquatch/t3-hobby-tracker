@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
 import ConnectionsNav from "../../crud/connections/connectionsNav";
 import { trpc } from "../../utils/trpc";
+import useAuthenticatedSession from "./../../auth/useAuthenticatedSession";
 
 const FriendRequests: NextPage = () => {
-  const { data: session } = useSession();
+  const sessionData = useAuthenticatedSession();
   const { isSuccess, data } = trpc.connections.getAllFriendRequests.useQuery();
   const utils = trpc.useContext();
 
@@ -28,12 +28,11 @@ const FriendRequests: NextPage = () => {
     };
   }
 
-  if (!session) {
-    return <h1>Loading...</h1>;
-  }
   const showActionColumn =
     isSuccess &&
-    data.some((x) => x.status === "PENDING" && x.toUserId === session.user?.id);
+    data.some(
+      (x) => x.status === "PENDING" && x.toUserId === sessionData.user?.id
+    );
 
   return (
     <>
