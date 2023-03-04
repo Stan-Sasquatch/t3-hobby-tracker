@@ -8,7 +8,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model BookRating {
@@ -80,7 +79,7 @@ model User {
   role          Role         @default(USER)
   accounts      Account[]
   sessions      Session[]
-  ratings       BookRating[]
+  bookRatings       BookRating[]
   userFriends        Friend[] @relation("users")
   friendUserFriends  Friend[] @relation("friend_users")
   userFriendRequests        FriendRequest[] @relation("user_requests")

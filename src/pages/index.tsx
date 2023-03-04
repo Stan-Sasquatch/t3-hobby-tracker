@@ -2,9 +2,15 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import HomeNav from "../crud/home/homeNav";
 import useRequireAuth from "../auth/useRequireAuth";
+import BookRatingsTable from "./../crud/books/bookRatingsTable";
+import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  useRequireAuth();
+  const session = useRequireAuth();
+  const userData = trpc.users.getRecentActivitiesForUser.useQuery(
+    session?.user?.id ?? ""
+  );
+
   return (
     <>
       <Head>
@@ -18,6 +24,7 @@ const Home: NextPage = () => {
             <div className="flex flex-col items-center gap-2">
               <p className="text-2xl text-white">Hello from Stan</p>
               <p className="text-2xl text-white">This is the actual homepage</p>
+              <BookRatingsTable bookRatings={userData.data?.bookRatings} />
             </div>
           </div>
         </main>
