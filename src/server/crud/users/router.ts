@@ -1,12 +1,11 @@
 import { z } from "zod";
 import { router, publicProcedure } from "../../trpc/trpc";
+import { getRecentActivitiesForUser } from "./commands/getRecentActivitiesForUser";
 
 export const usersRouter = router({
-  getRecentUserActivities: publicProcedure
+  getRecentActivitiesForUser: publicProcedure
     .input(z.string())
-    .query(({ ctx, input }) => {
-      return ctx.prisma.book.findUnique({
-        where: { id: input },
-      });
+    .query(async ({ input }) => {
+      return await getRecentActivitiesForUser(input);
     }),
 });
