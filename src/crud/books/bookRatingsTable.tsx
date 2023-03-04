@@ -11,7 +11,7 @@ interface BookRatingsTableProps {
 
 const BookRatingsTable = ({ bookRatings }: BookRatingsTableProps) => {
   return (
-    <table className="w-3/6 border-2 border-white bg-purple-200 bg-opacity-25 text-white sm:text-[1rem]">
+    <table className="w-full border-2 border-white bg-purple-200 bg-opacity-25 text-white sm:text-[1rem]">
       <thead>
         <tr>
           <th className="w-5/12 border-2 border-white">Book</th>
