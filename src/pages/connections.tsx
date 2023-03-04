@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import useRequireAuth from "../auth/useRequireAuth";
 import ConnectionsNav from "../crud/connections/connectionsNav";
 import Image from "next/image";
 import { trpc } from "../utils/trpc";
+import { useSession } from "next-auth/react";
 
 const Connections: NextPage = () => {
-  const session = useRequireAuth();
+  const { data: session } = useSession();
   const { isSuccess, data } = trpc.connections.getAllFriendsForUser.useQuery();
   if (!session) {
     return <h1>Loading...</h1>;

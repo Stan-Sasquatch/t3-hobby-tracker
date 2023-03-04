@@ -1,13 +1,13 @@
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
-import useRequireAuth from "../auth/useRequireAuth";
 import BookRatingsTable from "../crud/books/bookRatingsTable";
 import BooksNav from "../crud/books/booksNav";
 import { trpc } from "../utils/trpc";
 
 const Books: NextPage = () => {
-  const sessionData = useRequireAuth();
+  const sessionData = useSession();
   const allBookRatings = trpc.books.getAllUserRatings.useQuery();
 
   if (!sessionData) {
@@ -26,12 +26,13 @@ const Books: NextPage = () => {
             <h1 className="text-3xl font-medium tracking-tight text-white sm:text-[3rem]">
               Your Book Ratings
             </h1>
-            <BookRatingsTable bookRatings={allBookRatings.data} />
+            <div className="w-3/6">
+              <BookRatingsTable bookRatings={allBookRatings.data} />
+            </div>
           </div>
         </main>
       </BooksNav>
     </>
   );
 };
-
 export default Books;

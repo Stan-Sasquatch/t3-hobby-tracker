@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
-import useRequireAuth from "../../auth/useRequireAuth";
 import ConnectionsNav from "../../crud/connections/connectionsNav";
 import { trpc } from "../../utils/trpc";
 
 const FriendRequests: NextPage = () => {
-  const session = useRequireAuth();
+  const { data: session } = useSession();
   const { isSuccess, data } = trpc.connections.getAllFriendRequests.useQuery();
   const utils = trpc.useContext();
 

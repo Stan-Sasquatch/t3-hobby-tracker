@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import type { InferGetStaticPropsType } from "next";
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import type { ChangeEvent } from "react";
 import React from "react";
-import useRequireAuth from "../../auth/useRequireAuth";
 import BooksNav from "../../crud/books/booksNav";
 import { authorSearchGoogleVolumes } from "../../crud/books/queries";
 import type { GoogleVolume } from "../../server/crud/books/models";
@@ -25,7 +25,7 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   const [volume, setVolume] = React.useState<GoogleVolume | null>(null);
   const [rating, setRating] = React.useState<number | null>(null);
 
-  const session = useRequireAuth();
+  const { data: session } = useSession();
   const userEmail = session?.user?.email;
   const newBookAndRatingMutation = trpc.books.newBookAndRating.useMutation();
   const googleVolumeSearch = useQuery({

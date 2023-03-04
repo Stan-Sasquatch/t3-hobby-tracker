@@ -9,7 +9,6 @@ import initialiseConnections from "../../../server/crud/common/commands/initiali
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
-
   callbacks: {
     session({ session, user }) {
       if (session.user) {
