@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
-import BooksNav from "../../crud/books/booksNav";
 import { trpc } from "../../utils/trpc";
 
 const Detail: NextPage = () => {
@@ -28,15 +27,13 @@ const Detail: NextPage = () => {
         <title>Books</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <BooksNav>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-          {bookDetail.isSuccess && (
-            <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-              {bookDetail.data?.title}
-            </h1>
-          )}
-        </main>
-      </BooksNav>
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        {bookDetail.isSuccess && (
+          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+            {bookDetail.data?.title}
+          </h1>
+        )}
+      </main>
     </>
   );
 };

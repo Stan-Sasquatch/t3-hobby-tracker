@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import HomeNav from "../crud/home/homeNav";
 import { trpc } from "../utils/trpc";
 import Profile from "../crud/home/profile";
 import useAuthenticatedSession from "./../auth/useAuthenticatedSession";
@@ -16,13 +15,11 @@ const Home: NextPage = () => {
       <Head>
         <title>Hobby Tracker</title>
       </Head>
-      <HomeNav>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-          {sessionData.user?.name && (
-            <Profile name={sessionData.user.name} userData={test} />
-          )}
-        </main>
-      </HomeNav>
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        {sessionData.user?.name && (
+          <Profile name={sessionData.user.name} userData={test} />
+        )}
+      </main>
     </>
   );
 };

@@ -3,27 +3,20 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import "../styles/globals.css";
-import { useRouter } from "next/router";
-import { UNRESTRICTED_PATHS } from "../auth/paths";
-import Auth from "../auth/Auth";
+import { AuthWrapper } from "../auth/AuthWrapper";
+import { Layout } from "../crud/common/Layout";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const router = useRouter();
-  const noAuth = UNRESTRICTED_PATHS.some((path: string) =>
-    router.asPath.startsWith(path)
-  );
   return (
     <SessionProvider session={session}>
-      {noAuth ? (
-        <Component {...pageProps} />
-      ) : (
-        <Auth>
+      <AuthWrapper>
+        <Layout>
           <Component {...pageProps} />
-        </Auth>
-      )}
+        </Layout>
+      </AuthWrapper>
     </SessionProvider>
   );
 };
