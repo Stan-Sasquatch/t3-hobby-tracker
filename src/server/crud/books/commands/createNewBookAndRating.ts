@@ -1,5 +1,5 @@
 import type { Book, BookRating } from "@prisma/client";
-import type { CreateNewBookAndRatingModel } from "../models";
+import type { CreateNewBookAndRatingModel } from "../../../../crud/books/models";
 import { prisma } from "../../../db/client";
 import type { ResponseModel } from "../../common/models";
 

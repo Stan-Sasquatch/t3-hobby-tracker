@@ -8,17 +8,9 @@ import useAuthenticatedSession from "../../auth/useAuthenticatedSession";
 import { authorSearchGoogleVolumes } from "../../crud/books/queries";
 import type { GoogleVolume } from "../../server/crud/books/models";
 import { trpc } from "../../utils/trpc";
+import { StarRatingInput } from "./../../crud/common/components/starRatingInput";
 
-export async function getStaticProps() {
-  if (!process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY) {
-    throw new Error("Missing Google Books API Key env variable");
-  }
-  return { props: { googleKey: process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY } };
-}
-
-const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
-  props
-) => {
+const Create: NextPage = () => {
   const [authorSearchText, setAuthorSearchText] = React.useState<string>("");
   const [volumeSearchText, setVolumeSearchText] = React.useState<string>("");
   const [volume, setVolume] = React.useState<GoogleVolume | null>(null);
@@ -29,11 +21,7 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   const googleVolumeSearch = useQuery({
     queryKey: ["googleVolumes", volumeSearchText, authorSearchText],
     queryFn: () =>
-      authorSearchGoogleVolumes(
-        props.googleKey,
-        volumeSearchText,
-        authorSearchText
-      ),
+      authorSearchGoogleVolumes(volumeSearchText, authorSearchText),
     enabled: false,
   });
 
@@ -70,27 +58,27 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
     }
   };
 
-  const starRatingInput = (position: number) => {
-    const checked = !!rating && position <= rating;
-    return (
-      <div onClick={() => setRating(position)}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className={`h-6 w-6 text-yellow-300 ${checked ? "fill-current" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-          />
-        </svg>
-      </div>
-    );
-  };
+  // const starRatingInput = (position: number) => {
+  //   const checked = !!rating && position <= rating;
+  //   return (
+  //     <div onClick={() => setRating(position)}>
+  //       <svg
+  //         xmlns="http://www.w3.org/2000/svg"
+  //         className={`h-6 w-6 text-yellow-300 ${checked ? "fill-current" : ""}`}
+  //         fill="none"
+  //         viewBox="0 0 24 24"
+  //         stroke="currentColor"
+  //       >
+  //         <path
+  //           strokeLinecap="round"
+  //           strokeLinejoin="round"
+  //           strokeWidth="2"
+  //           d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+  //         />
+  //       </svg>
+  //     </div>
+  //   );
+  // };
 
   return (
     <>
@@ -172,11 +160,13 @@ const Create: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
               {volume?.id && (
                 <div className="container flex flex-col items-center justify-center">
                   <div className="inline-flex">
-                    {starRatingInput(1)}
-                    {starRatingInput(2)}
-                    {starRatingInput(3)}
-                    {starRatingInput(4)}
-                    {starRatingInput(5)}
+                    {[1, 2, 3, 4, 5].map((x) => (
+                      <StarRatingInput
+                        key={x}
+                        onClick={() => setRating(x)}
+                        checked={!!rating && x <= rating}
+                      />
+                    ))}
                   </div>
                   <button
                     type="button"
