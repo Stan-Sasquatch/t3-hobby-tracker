@@ -3,8 +3,8 @@ import type { Navigation } from "../common/models";
 type homeRoutes = "Books" | "TV and Film" | "Connections" | "Exercise";
 export const homeNavigation: Navigation<homeRoutes> = {
   "TV and Film": {
-    path: "/films",
-    title: "Films",
+    path: "/vMedia",
+    title: "TV and Film",
     disabled: true,
   },
   Books: {

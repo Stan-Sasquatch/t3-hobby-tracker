@@ -32,6 +32,35 @@ model Book {
   @@unique([title, author])
 }
 
+// VMedia is just a catch all term for tv or film
+model VMediaRating {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  vMedia      VMedia     @relation(fields: [vMediaId], references: [id])
+  vMediaId    String
+  rating    Float
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@unique([vMediaId, userId])
+}
+
+model VMedia {
+  id              String          @id @default(uuid())
+  createdAt       DateTime        @default(now())
+  title           String          @db.VarChar(255)
+  vMediaRatings     VMediaRating[]
+  visualMediaType VisualMediaType
+  releaseDate     DateTime
+
+  @@unique([title, releaseDate])
+}
+
+enum VisualMediaType {
+  FILM
+  TV
+}
+
 enum Role {
   USER
   ADMIN
@@ -71,39 +100,41 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  email         String?      @unique
-  emailVerified DateTime?
-  image         String?
-  role          Role         @default(USER)
-  accounts      Account[]
-  sessions      Session[]
-  bookRatings       BookRating[]
-  userFriends        Friend[] @relation("users")
-  friendUserFriends  Friend[] @relation("friend_users")
-  userFriendRequests        FriendRequest[] @relation("user_requests")
-  friendUserFriendRequests  FriendRequest[] @relation("friend_user_requests")
-  lastLoginDate DateTime?
+  id                       String          @id @default(cuid())
+  name                     String?
+  email                    String?         @unique
+  emailVerified            DateTime?
+  image                    String?
+  role                     Role            @default(USER)
+  accounts                 Account[]
+  sessions                 Session[]
+  bookRatings              BookRating[]
+  vMediaRatings            VMediaRating[]
+  userFriends              Friend[]        @relation("users")
+  friendUserFriends        Friend[]        @relation("friend_users")
+  userFriendRequests       FriendRequest[] @relation("user_requests")
+  friendUserFriendRequests FriendRequest[] @relation("friend_user_requests")
+  lastLoginDate            DateTime?
 }
 
 model Friend {
-  id        String      @id @default(cuid())
+  id        String @id @default(cuid())
   user_id   String
   friend_id String
-  user      User    @relation(name: "users", fields: [user_id], references: [id])
-  friend    User    @relation(name: "friend_users", fields: [friend_id], references: [id])
+  user      User   @relation(name: "users", fields: [user_id], references: [id])
+  friend    User   @relation(name: "friend_users", fields: [friend_id], references: [id])
 
   @@unique([user_id, friend_id])
 }
 
 model FriendRequest {
-  id        String      @id @default(cuid())
-  fromUserId   String
-  toUserId String
-  fromUser      User    @relation(name: "user_requests", fields: [fromUserId], references: [id])
-  toUser    User    @relation(name: "friend_user_requests", fields: [toUserId], references: [id])
-  status FriendRequestStatus
+  id         String              @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  fromUser   User                @relation(name: "user_requests", fields: [fromUserId], references: [id])
+  toUser     User                @relation(name: "friend_user_requests", fields: [toUserId], references: [id])
+  status     FriendRequestStatus
+
   @@unique([fromUserId, toUserId])
 }
 
