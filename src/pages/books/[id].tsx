@@ -1,23 +1,14 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import React from "react";
 import { trpc } from "@utils/trpc";
+import { useDefinedIdRoute } from "@utils/hooks/useDefinedIdRoute";
 
 const Detail: NextPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
+  const { id, loading } = useDefinedIdRoute();
 
-  if (!router.isReady) {
+  if (loading) {
     return <></>;
-  }
-
-  if (!id) {
-    throw new Error("Id not passed correctly");
-  }
-
-  if (Array.isArray(id)) {
-    throw new Error("Nested query not implemented for this route");
   }
 
   const bookDetail = trpc.books.getBookById.useQuery(id);
