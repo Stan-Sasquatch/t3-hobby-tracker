@@ -1,8 +1,8 @@
-import type { CreateNewVMediaAndRatingModel } from "../../../crud/tvAndFilm/models";
+import type { CreateNewVMediaAndRatingModel } from "../../../crud/vMedia/models";
 import {
   CreateNewFilmAndRatingModel,
   CreateNewTvShowAndRatingModel,
-} from "../../../crud/tvAndFilm/models";
+} from "../../../crud/vMedia/models";
 import { router, publicProcedure } from "../../trpc/trpc";
 import { z } from "zod";
 import { CreateNewVMediaAndRating } from "./commands/createNewVMediaAndRating";
@@ -41,18 +41,18 @@ export const VMediaRouter = router({
       };
     }),
   getAllUserRatings: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.filmRating.findMany({
+    return ctx.prisma.vMediaRating.findMany({
       where: {
         user: {
           id: ctx.session?.user?.id,
         },
       },
-      include: { film: true },
+      include: { vMedia: true },
       orderBy: { createdAt: "desc" },
     });
   }),
   getFilmById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.prisma.film.findUnique({
+    return ctx.prisma.vMedia.findUnique({
       where: { id: input },
     });
   }),
