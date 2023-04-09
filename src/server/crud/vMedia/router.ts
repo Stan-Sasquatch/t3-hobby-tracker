@@ -14,6 +14,7 @@ export const VMediaRouter = router({
     .mutation(async ({ input }) => {
       const model: CreateNewVMediaAndRatingModel = {
         ...input,
+        vMedia: input.film,
         vMediaType: "FILM",
       };
       const { data, error } = await CreateNewVMediaAndRating(model);
@@ -28,9 +29,9 @@ export const VMediaRouter = router({
       const model: CreateNewVMediaAndRatingModel = {
         ...input,
         vMedia: {
-          ...input.vMedia,
-          release_date: input.vMedia.first_air_date,
-          title: input.vMedia.name,
+          ...input.tvShow,
+          release_date: input.tvShow.first_air_date,
+          title: input.tvShow.name,
         },
         vMediaType: "TV",
       };
@@ -57,7 +58,7 @@ export const VMediaRouter = router({
         orderBy: { createdAt: "desc" },
       });
     }),
-  getFilmById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+  getVMediaById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.vMedia.findUnique({
       where: { id: input },
     });

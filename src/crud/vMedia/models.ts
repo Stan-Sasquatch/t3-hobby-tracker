@@ -78,7 +78,7 @@ export type MovieDBTVShow = z.infer<typeof MovieDBTVShow>;
 
 export const CreateNewFilmAndRatingModel = z.object({
   userEmail: z.string(),
-  vMedia: MovieDBFilm,
+  film: MovieDBFilm,
   rating: z.number(),
 });
 
@@ -88,7 +88,7 @@ export type CreateNewFilmAndRatingModel = z.infer<
 
 export const CreateNewTvShowAndRatingModel = z.object({
   userEmail: z.string(),
-  vMedia: MovieDBTVShow,
+  tvShow: MovieDBTVShow,
   rating: z.number(),
 });
 
