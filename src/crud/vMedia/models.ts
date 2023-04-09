@@ -14,10 +14,10 @@ export const vMediaNavigation: Navigation<vMediaRoutes> = {
   },
 };
 
-export const vMediaTypeText: Record<
-  VisualMediaType,
-  Capitalize<Lowercase<VisualMediaType>>
-> = { FILM: "Film", TV: "Tv" };
+export const vMediaTypeText = {
+  FILM: "Film",
+  TV: "Tv Show",
+} satisfies Record<VisualMediaType, string>;
 export const ZVisualMediaType = z.nativeEnum(VisualMediaType);
 
 export const MovieDBBaseResponse = z.object({
