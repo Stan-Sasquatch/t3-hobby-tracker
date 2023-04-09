@@ -7,7 +7,7 @@ import useAuthenticatedSession from "@auth/useAuthenticatedSession";
 import { authorSearchGoogleVolumes } from "@clientCrud/books/queries";
 import type { GoogleVolume } from "@clientCrud/books/models";
 import { trpc } from "@utils/trpc";
-import { StarRatingInput } from "@clientCrud/common/components/starRatingInput";
+import RatingPicker from "@clientCrud/common/components/ratingPicker";
 
 const Create: NextPage = () => {
   const [authorSearchText, setAuthorSearchText] = React.useState<string>("");
@@ -135,25 +135,12 @@ const Create: NextPage = () => {
                   </>
                 )}
               {volume?.id && (
-                <div className="container flex flex-col items-center justify-center">
-                  <div className="inline-flex">
-                    {[1, 2, 3, 4, 5].map((x) => (
-                      <StarRatingInput
-                        key={x}
-                        onClick={() => setRating(x)}
-                        checked={!!rating && x <= rating}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleSaveRating}
-                    disabled={isLoading || submitDisabled}
-                    className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                  >
-                    Save New Rating
-                  </button>
-                </div>
+                <RatingPicker
+                  setRating={setRating}
+                  rating={rating}
+                  handleSaveRating={handleSaveRating}
+                  saveDisabled={isLoading || submitDisabled}
+                />
               )}
             </div>
           </form>

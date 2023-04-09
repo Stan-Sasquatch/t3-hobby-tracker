@@ -6,8 +6,9 @@ import React from "react";
 import useAuthenticatedSession from "@auth/useAuthenticatedSession";
 import { searchMovieDBFilm } from "@clientCrud/vMedia/queries";
 import { trpc } from "@utils/trpc";
-import { StarRatingInput } from "@clientCrud/common/components/starRatingInput";
 import type { MovieDBFilm } from "@clientCrud/vMedia/models";
+import FilmSearch from "@clientCrud/vMedia/components/filmSearch";
+import RatingPicker from "@clientCrud/common/components/ratingPicker";
 
 const Create: NextPage = () => {
   const [searchText, setSearchText] = React.useState<string>("");
@@ -16,7 +17,7 @@ const Create: NextPage = () => {
   const sessionData = useAuthenticatedSession();
   const userEmail = sessionData.user?.email;
   const newFilmAndRatingMutation = trpc.vMedia.newFilmAndRating.useMutation();
-  const filmSearch = useQuery({
+  const filmSearchQuery = useQuery({
     queryKey: ["movieDbFilmSearch", searchText],
     queryFn: () => searchMovieDBFilm(searchText),
     enabled: false,
@@ -32,7 +33,7 @@ const Create: NextPage = () => {
 
   const submitDisabled = !film || !rating || !userEmail;
   function handleSearch() {
-    filmSearch.refetch();
+    filmSearchQuery.refetch();
   }
 
   function handleSaveRating() {
@@ -46,7 +47,7 @@ const Create: NextPage = () => {
   }
 
   const onSelectedFilmChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const item = filmSearch.data?.results?.find(
+    const item = filmSearchQuery.data?.results?.find(
       (x) => x.id === +event.target.value
     );
     if (item) {
@@ -68,71 +69,21 @@ const Create: NextPage = () => {
           </h1>
           <form>
             <div className="flex-col">
-              <div className="flex-row py-2">
-                <label htmlFor="searchText" className="p-1 text-white">
-                  Film:
-                </label>
-                <input
-                  className="rounded-sm border-black p-1"
-                  type="text"
-                  id="searchText"
-                  name="Film"
-                  value={searchText}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                    setSearchText(event.target.value)
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={handleSearch}
-                  className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                >
-                  Search
-                </button>
-              </div>
-              {filmSearch.isSuccess &&
-                filmSearch.data.results.some((x) => x) && (
-                  <>
-                    <label className="p-1 text-white" htmlFor="select-films">
-                      Films:
-                    </label>
-                    <select
-                      id="select-films"
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      value={film?.id}
-                      onChange={onSelectedFilmChange}
-                    >
-                      <option key={"default"} value={""}>
-                        Select a film from the results
-                      </option>
-                      {filmSearch.data.results.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {`${item.title} ${item.release_date}`}
-                        </option>
-                      ))}
-                    </select>
-                  </>
-                )}
+              <FilmSearch
+                searchText={searchText}
+                setSearchText={setSearchText}
+                handleSearch={handleSearch}
+                filmSearchQuery={filmSearchQuery}
+                onSelectedFilmChange={onSelectedFilmChange}
+                film={film}
+              />
               {film?.id && (
-                <div className="container flex flex-col items-center justify-center">
-                  <div className="inline-flex">
-                    {[1, 2, 3, 4, 5].map((x) => (
-                      <StarRatingInput
-                        key={x}
-                        onClick={() => setRating(x)}
-                        checked={!!rating && x <= rating}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleSaveRating}
-                    disabled={isLoading || submitDisabled}
-                    className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                  >
-                    Save New Rating
-                  </button>
-                </div>
+                <RatingPicker
+                  setRating={setRating}
+                  rating={rating}
+                  handleSaveRating={handleSaveRating}
+                  saveDisabled={isLoading || submitDisabled}
+                />
               )}
             </div>
           </form>
