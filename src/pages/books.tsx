@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import BookRatingsTable from "../crud/books/bookRatingsTable";
+import BookRatingsTable from "../crud/books/components/bookRatingsTable";
 import { trpc } from "../utils/trpc";
 
 const Books: NextPage = () => {

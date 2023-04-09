@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import BooksNav from "../books/booksNav";
-import ConnectionsNav from "../connections/connectionsNav";
-import HomeNav from "../home/homeNav";
-import type { WrapperProps } from "./models";
-import VMediaNav from "../vMedia/vMediaNav";
+import BooksNav from "../../books/booksNav";
+import ConnectionsNav from "../../connections/components/connectionsNav";
+import HomeNav from "../../home/components/homeNav";
+import type { WrapperProps } from "../models";
+import VMediaNav from "../../vMedia/components/vMediaNav";
 
 const layoutMap: {
   [key: string]: ({ children }: WrapperProps) => JSX.Element;
