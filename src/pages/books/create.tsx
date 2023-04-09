@@ -149,7 +149,7 @@ const Create: NextPage = () => {
             {isSuccess && response.data ? (
               <p>{`created rating of ${response.data.rating} for book: ${response.data.book.title}`}</p>
             ) : (
-              <p>{response?.error}</p>
+              <p>{response?.message}</p>
             )}
           </div>
         </div>

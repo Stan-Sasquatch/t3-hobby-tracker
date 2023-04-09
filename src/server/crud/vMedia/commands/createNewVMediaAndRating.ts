@@ -8,10 +8,11 @@ export const CreateNewVMediaAndRating = async (
 ): Promise<ResponseModel<VMediaRating & { vMedia: VMedia }>> => {
   const { userEmail, vMedia, rating, vMediaType } = model;
   const title = vMedia.title;
-  const releaseDate = vMedia.release_date;
+  const releaseDate = new Date(vMedia.release_date);
+  releaseDate.setUTCHours(0, 0, 0, 0);
   if (!releaseDate || !title) {
     return {
-      error:
+      message:
         "Can't create a rating for a vMedia that is missing an release date or title",
     };
   }
@@ -24,7 +25,7 @@ export const CreateNewVMediaAndRating = async (
 
   if (!user) {
     return {
-      error: "No user Id to assign the rating to",
+      message: "No user Id to assign the rating to",
     };
   }
 
@@ -55,7 +56,7 @@ export const CreateNewVMediaAndRating = async (
 
     if (existingRating) {
       return {
-        error: "User already has a rating for this vMedia",
+        message: "User already has a rating for this vMedia",
       };
     }
     console.log("Skipping creating this vMedia as it already exists");

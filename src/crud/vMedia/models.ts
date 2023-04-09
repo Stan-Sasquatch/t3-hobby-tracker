@@ -22,19 +22,18 @@ export const ZVisualMediaType = z.nativeEnum(VisualMediaType);
 
 export const MovieDBBaseResponse = z.object({
   adult: z.boolean(),
-  backdrop_path: z.string().optional(),
+  backdrop_path: z.string().optional().nullable(),
   genre_ids: z.array(z.number()),
   id: z.number(),
   overview: z.string(),
   popularity: z.number(),
-  poster_path: z.string().optional(),
+  poster_path: z.string().optional().nullable(),
   vote_average: z.number(),
   vote_count: z.number(),
 });
 
 export const MovieDBFilm = MovieDBBaseResponse.extend({
   original_title: z.string(),
-  poster_path: z.string().optional(),
   release_date: z.string(),
   title: z.string(),
   video: z.boolean(),
@@ -44,7 +43,6 @@ export const MovieDBVMedia = MovieDBBaseResponse.extend({
   release_date: z.string(),
   title: z.string(),
   original_title: z.string().optional(),
-  poster_path: z.string().optional(),
   video: z.boolean().optional(),
   origin_country: z.array(z.string()).optional(),
 });

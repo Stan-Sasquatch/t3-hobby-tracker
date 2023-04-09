@@ -17,10 +17,10 @@ export const VMediaRouter = router({
         vMedia: input.film,
         vMediaType: "FILM",
       };
-      const { data, error } = await CreateNewVMediaAndRating(model);
+      const { data, message } = await CreateNewVMediaAndRating(model);
       return {
         data,
-        error,
+        message,
       };
     }),
   newTvShowAndRating: publicProcedure
@@ -36,10 +36,10 @@ export const VMediaRouter = router({
         vMediaType: "TV",
       };
 
-      const { data, error } = await CreateNewVMediaAndRating(model);
+      const { data, message } = await CreateNewVMediaAndRating(model);
       return {
         data,
-        error,
+        message,
       };
     }),
   getAllUserRatings: publicProcedure

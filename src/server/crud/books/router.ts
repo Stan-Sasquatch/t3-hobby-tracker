@@ -7,10 +7,10 @@ export const booksRouter = router({
   newBookAndRating: publicProcedure
     .input(CreateNewBookAndRatingModel)
     .mutation(async ({ input }) => {
-      const { data, error } = await CreateNewBookAndRating(input);
+      const { data, message } = await CreateNewBookAndRating(input);
       return {
         data,
-        error,
+        message,
       };
     }),
   getAllUserRatings: publicProcedure.query(({ ctx }) => {

@@ -11,7 +11,7 @@ export const CreateNewBookAndRating = async (
   const title = volume?.volumeInfo?.title;
   if (!author || !title) {
     return {
-      error:
+      message:
         "Can't create a rating for a book that is missing an author or title",
     };
   }
@@ -24,7 +24,7 @@ export const CreateNewBookAndRating = async (
 
   if (!user) {
     return {
-      error: "No user Id to assign the rating to",
+      message: "No user Id to assign the rating to",
     };
   }
 
@@ -55,7 +55,7 @@ export const CreateNewBookAndRating = async (
 
     if (existingRating) {
       return {
-        error: "User already has a rating for this book",
+        message: "User already has a rating for this book",
       };
     }
     console.log("Skipping creating this book as it already exists");
