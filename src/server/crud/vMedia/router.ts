@@ -1,10 +1,10 @@
-import type { CreateNewVMediaAndRatingModel } from "../../../crud/vMedia/models";
+import type { CreateNewVMediaAndRatingModel } from "@clientCrud/vMedia/models";
 import {
   CreateNewFilmAndRatingModel,
   CreateNewTvShowAndRatingModel,
   ZVisualMediaType,
-} from "../../../crud/vMedia/models";
-import { router, publicProcedure } from "../../trpc/trpc";
+} from "@clientCrud/vMedia/models";
+import { router, publicProcedure } from "@trpc/trpc";
 import { z } from "zod";
 import { CreateNewVMediaAndRating } from "./commands/createNewVMediaAndRating";
 

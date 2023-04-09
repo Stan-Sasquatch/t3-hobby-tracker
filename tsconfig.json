@@ -14,7 +14,18 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "baseUrl": ".",
+    "paths": {
+      "@clientCrud/*": ["src/crud/*"],
+      "@serverCrud/*": ["src/server/crud/*"],
+      "@trpc/*": ["src/server/trpc/*"],
+      "@env/*": ["src/env/*"],
+      "@db/*": ["src/server/db/*"],
+      "@auth/*": ["src/auth/*"],
+      "@nextApi/*": ["src/pages/api/*"],
+      "@utils/*": ["src/utils/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
   "exclude": ["node_modules"]

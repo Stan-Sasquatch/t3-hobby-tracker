@@ -3,9 +3,9 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-import { env } from "../../../env/server.mjs";
-import { prisma } from "../../../server/db/client";
-import initialiseConnections from "../../../server/crud/common/commands/initialiseConnections";
+import { env } from "@env/server.mjs";
+import { prisma } from "@db/client";
+import initialiseConnections from "@serverCrud/common/commands/initialiseConnections";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -21,6 +21,7 @@ export const authOptions: NextAuthOptions = {
     async signIn(message) {
       if (message.isNewUser) {
         initialiseConnections(message.user.id);
+        ``;
       }
     },
   },

@@ -1,7 +1,7 @@
 import type { VMedia, VMediaRating } from "@prisma/client";
-import { prisma } from "../../../db/client";
-import type { ResponseModel } from "../../common/models";
-import type { CreateNewVMediaAndRatingModel } from "../../../../crud/vMedia/models";
+import { prisma } from "@db/client";
+import type { ResponseModel } from "@serverCrud/common/models";
+import type { CreateNewVMediaAndRatingModel } from "@clientCrud/vMedia/models";
 
 export const CreateNewVMediaAndRating = async (
   model: CreateNewVMediaAndRatingModel

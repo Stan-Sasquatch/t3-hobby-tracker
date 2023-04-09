@@ -1,14 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import type { InferGetStaticPropsType } from "next";
 import { type NextPage } from "next";
 import Head from "next/head";
 import type { ChangeEvent } from "react";
 import React from "react";
-import useAuthenticatedSession from "../../auth/useAuthenticatedSession";
-import { authorSearchGoogleVolumes } from "../../crud/books/queries";
-import type { GoogleVolume } from "../../server/crud/books/models";
-import { trpc } from "../../utils/trpc";
-import { StarRatingInput } from "./../../crud/common/components/starRatingInput";
+import useAuthenticatedSession from "@auth/useAuthenticatedSession";
+import { authorSearchGoogleVolumes } from "@clientCrud/books/queries";
+import type { GoogleVolume } from "@clientCrud/books/models";
+import { trpc } from "@utils/trpc";
+import { StarRatingInput } from "@clientCrud/common/components/starRatingInput";
 
 const Create: NextPage = () => {
   const [authorSearchText, setAuthorSearchText] = React.useState<string>("");

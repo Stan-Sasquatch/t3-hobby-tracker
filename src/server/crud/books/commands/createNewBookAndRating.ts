@@ -1,7 +1,7 @@
 import type { Book, BookRating } from "@prisma/client";
-import type { CreateNewBookAndRatingModel } from "../../../../crud/books/models";
-import { prisma } from "../../../db/client";
-import type { ResponseModel } from "../../common/models";
+import type { CreateNewBookAndRatingModel } from "@clientCrud/books/models";
+import { prisma } from "@db/client";
+import type { ResponseModel } from "@serverCrud/common/models";
 
 export const CreateNewBookAndRating = async (
   model: CreateNewBookAndRatingModel

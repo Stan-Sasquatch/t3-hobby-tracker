@@ -1,7 +1,7 @@
 import { CreateNewBookAndRating } from "./commands/createNewBookAndRating";
-import { router, publicProcedure } from "../../trpc/trpc";
+import { router, publicProcedure } from "@trpc/trpc";
 import { z } from "zod";
-import { CreateNewBookAndRatingModel } from "../../../crud/books/models";
+import { CreateNewBookAndRatingModel } from "@clientCrud/books/models";
 
 export const booksRouter = router({
   newBookAndRating: publicProcedure

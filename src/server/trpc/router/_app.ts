@@ -1,8 +1,8 @@
 import { router } from "../trpc";
-import { booksRouter } from "../../crud/books/router";
-import { connectionsRouter } from "../../crud/connections/router";
-import { usersRouter } from "../../crud/users/router";
-import { VMediaRouter } from "../../crud/vMedia/router";
+import { booksRouter } from "@serverCrud/books/router";
+import { connectionsRouter } from "@serverCrud/connections/router";
+import { usersRouter } from "@serverCrud/users/router";
+import { VMediaRouter } from "@serverCrud/vMedia/router";
 
 export const appRouter = router({
   books: booksRouter,

@@ -1,4 +1,4 @@
-import { prisma } from "../../../db/client";
+import { prisma } from "@db/client";
 
 export default async function initialiseConnections(toUserId: string) {
   console.log("initialising connection for new user");

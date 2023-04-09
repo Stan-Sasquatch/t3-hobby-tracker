@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { Navigation, WrapperProps } from "../models";
 import Image from "next/image";
 import Login from "./login";
-import useAuthenticatedSession from "../../../auth/useAuthenticatedSession";
+import useAuthenticatedSession from "@auth/useAuthenticatedSession";
 
 interface NavbarProps<T extends string> {
   pathname: string;

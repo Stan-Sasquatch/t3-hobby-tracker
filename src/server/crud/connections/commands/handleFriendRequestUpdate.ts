@@ -1,5 +1,5 @@
-import type { CompleteStatusEnum } from "../../../../crud/connections/models";
-import { prisma } from "../../../db/client";
+import type { CompleteStatusEnum } from "@clientCrud/connections/models";
+import { prisma } from "@db/client";
 
 export async function handleFriendRequestUpdate(input: {
   id: string;
