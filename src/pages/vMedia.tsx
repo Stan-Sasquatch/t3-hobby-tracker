@@ -1,10 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import React, { useState } from "react";
-import VMediaRatingsTable from "../crud/vMedia/VMediaRatingsTable";
 import { trpc } from "../utils/trpc";
 import type { VisualMediaType } from "@prisma/client";
-import { vMediaTypeText } from "../crud/vMedia/models";
+import { vMediaTypeText } from "@clientCrud/vMedia/models";
+import VMediaRatingsTable from "@clientCrud/vMedia/components/VMediaRatingsTable";
 
 const VMedia: NextPage = () => {
   const [vMediaType, setVMediaType] = useState<VisualMediaType>("FILM");

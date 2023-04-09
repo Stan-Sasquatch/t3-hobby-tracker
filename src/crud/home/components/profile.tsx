@@ -1,5 +1,5 @@
 import type { Book, BookRating } from "@prisma/client";
-import BookRatingsTable from "../books/bookRatingsTable";
+import BookRatingsTable from "@clientCrud/books/components/bookRatingsTable";
 
 interface ProfileProps {
   name: string;

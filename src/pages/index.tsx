@@ -1,8 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import Profile from "../crud/home/profile";
 import useAuthenticatedSession from "./../auth/useAuthenticatedSession";
+import Profile from "@clientCrud/home/components/profile";
 
 const Home: NextPage = () => {
   const sessionData = useAuthenticatedSession();
