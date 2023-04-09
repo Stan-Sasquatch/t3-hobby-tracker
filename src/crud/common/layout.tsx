@@ -3,6 +3,7 @@ import BooksNav from "../books/booksNav";
 import ConnectionsNav from "../connections/connectionsNav";
 import HomeNav from "../home/homeNav";
 import type { WrapperProps } from "./models";
+import VMediaNav from "../vMedia/vMediaNav";
 
 const layoutMap: {
   [key: string]: ({ children }: WrapperProps) => JSX.Element;
@@ -11,6 +12,7 @@ const layoutMap: {
   "": HomeNav,
   books: BooksNav,
   connections: ConnectionsNav,
+  vMedia: VMediaNav,
 };
 
 export const Layout = ({ children }: WrapperProps) => {

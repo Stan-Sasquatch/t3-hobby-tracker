@@ -5,7 +5,6 @@ export const homeNavigation: Navigation<homeRoutes> = {
   "TV and Film": {
     path: "/vMedia",
     title: "TV and Film",
-    disabled: true,
   },
   Books: {
     path: "/books",

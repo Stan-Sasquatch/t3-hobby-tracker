@@ -1,7 +1,24 @@
 import { VisualMediaType } from "@prisma/client";
 import { z } from "zod";
+import type { Navigation } from "../common/models";
 
-export type mediaType = "film" | "tv";
+type vMediaRoutes = "Create" | "All";
+export const vMediaNavigation: Navigation<vMediaRoutes> = {
+  Create: {
+    path: "/create",
+    title: "New Rating",
+  },
+  All: {
+    path: "",
+    title: "All Visual Media Ratings",
+  },
+};
+
+export const vMediaTypeText: Record<
+  VisualMediaType,
+  Capitalize<Lowercase<VisualMediaType>>
+> = { FILM: "Film", TV: "Tv" };
+export const ZVisualMediaType = z.nativeEnum(VisualMediaType);
 
 export const MovieDBBaseResponse = z.object({
   adult: z.boolean(),
@@ -83,7 +100,7 @@ export const CreateNewVMediaAndRatingModel = z.object({
   userEmail: z.string(),
   vMedia: MovieDBVMedia,
   rating: z.number(),
-  vMediaType: z.nativeEnum(VisualMediaType),
+  vMediaType: ZVisualMediaType,
 });
 
 export type CreateNewVMediaAndRatingModel = z.infer<
