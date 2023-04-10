@@ -15,6 +15,10 @@ const VMediaRatingsTable = ({
   vMediaType,
 }: VMediaRatingsTableProps) => {
   const dateTitle = vMediaType === "FILM" ? "Release Date" : "First Air Date";
+  const monthYear = (date: Date) =>
+    date.toLocaleString("default", { month: "long" }) +
+    " " +
+    date.getFullYear();
   return (
     <table className="w-full border-2 border-white bg-purple-200 bg-opacity-25 text-white sm:text-[1rem]">
       <thead>
@@ -42,7 +46,7 @@ const VMediaRatingsTable = ({
                     </Link>
                   </td>
                   <td className="w-3/12 border-2 border-white">
-                    {v.vMedia.releaseDate.toDateString()}
+                    {monthYear(v.vMedia.releaseDate)}
                   </td>
                   <td className="w-2/12 border-2 border-white text-center">
                     {v.rating}
