@@ -9,7 +9,17 @@ const Home: NextPage = () => {
   const userData = trpc.users.getRecentActivitiesForUser.useQuery(
     sessionData.user?.id ?? ""
   );
-  const test = userData.data?.bookRatings;
+  const bookRatings = userData.data?.bookRatings ?? [];
+  const filmRatings =
+    userData.data?.vMediaRatings.filter(
+      (x) => x.vMedia.visualMediaType === "FILM"
+    ) ?? [];
+
+  const tvRatings =
+    userData.data?.vMediaRatings.filter(
+      (x) => x.vMedia.visualMediaType === "TV"
+    ) ?? [];
+
   return (
     <>
       <Head>
@@ -17,7 +27,12 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         {sessionData.user?.name && (
-          <Profile name={sessionData.user.name} userData={test} />
+          <Profile
+            name={sessionData.user.name}
+            bookRatings={bookRatings}
+            filmRatings={filmRatings}
+            tvRatings={tvRatings}
+          />
         )}
       </main>
     </>

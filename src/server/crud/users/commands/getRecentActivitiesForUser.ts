@@ -11,6 +11,11 @@ export async function getRecentActivitiesForUser(id: string) {
         orderBy: { createdAt: "desc" },
         take: 3,
       },
+      vMediaRatings: {
+        include: { vMedia: true },
+        orderBy: { createdAt: "desc" },
+        take: 6,
+      },
     },
   });
 

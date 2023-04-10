@@ -1,25 +1,46 @@
-import type { Book, BookRating } from "@prisma/client";
+import type { Book, BookRating, VMedia, VMediaRating } from "@prisma/client";
 import BookRatingsTable from "@clientCrud/books/components/bookRatingsTable";
+import VMediaRatingsTable from "@clientCrud/vMedia/components/VMediaRatingsTable";
 
 interface ProfileProps {
   name: string;
-  userData:
-    | (BookRating & {
-        book: Book;
-      })[]
-    | undefined;
+  bookRatings: (BookRating & {
+    book: Book;
+  })[];
+  filmRatings: (VMediaRating & {
+    vMedia: VMedia;
+  })[];
+  tvRatings: (VMediaRating & {
+    vMedia: VMedia;
+  })[];
 }
 
-const Profile = ({ name, userData }: ProfileProps) => {
+const Profile = ({
+  name,
+  bookRatings,
+  filmRatings,
+  tvRatings,
+}: ProfileProps) => {
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
       <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[2rem]">
         {`${name}'s hobby tracker`}
       </h1>
-      <p className="text-2xl text-white">Hello from Stan</p>
-      <p className="text-2xl text-white">This is the actual homepage</p>
+      {bookRatings.length > 0 && (
+        <>
+          <p className="text-2xl text-white">Recently Read</p>
+          <div className="w-3/6">
+            <BookRatingsTable bookRatings={bookRatings} />
+          </div>
+        </>
+      )}
+
+      <p className="text-2xl text-white">Recently Watched</p>
       <div className="w-3/6">
-        <BookRatingsTable bookRatings={userData} />
+        <VMediaRatingsTable vMediaRatings={filmRatings} vMediaType={"FILM"} />
+      </div>
+      <div className="w-3/6">
+        <VMediaRatingsTable vMediaRatings={tvRatings} vMediaType={"TV"} />
       </div>
     </div>
   );
