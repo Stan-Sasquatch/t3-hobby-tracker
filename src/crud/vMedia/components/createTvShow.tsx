@@ -2,22 +2,23 @@ import { useQuery } from "@tanstack/react-query";
 import type { ChangeEvent } from "react";
 import React from "react";
 import useAuthenticatedSession from "@auth/useAuthenticatedSession";
-import { searchMovieDBFilm } from "@clientCrud/vMedia/queries";
+import { searchMovieDBTvShow } from "@clientCrud/vMedia/queries";
 import { trpc } from "@utils/trpc";
-import type { MovieDBFilm } from "@clientCrud/vMedia/models";
-import FilmSearch from "@clientCrud/vMedia/components/filmSearch";
+import type { MovieDBTvShow } from "@clientCrud/vMedia/models";
+import TvShowSearch from "@clientCrud/vMedia/components/tvShowSearch";
 import RatingPicker from "@clientCrud/common/components/ratingPicker";
 
-export default function CreateFilm() {
+export default function CreateTvShow() {
   const [searchText, setSearchText] = React.useState<string>("");
-  const [film, setFilm] = React.useState<MovieDBFilm | null>(null);
+  const [tvShow, setTvShow] = React.useState<MovieDBTvShow | null>(null);
   const [rating, setRating] = React.useState<number | null>(null);
   const sessionData = useAuthenticatedSession();
   const userEmail = sessionData.user?.email;
-  const newFilmAndRatingMutation = trpc.vMedia.newFilmAndRating.useMutation();
-  const filmSearchQuery = useQuery({
-    queryKey: ["movieDbFilmSearch", searchText],
-    queryFn: () => searchMovieDBFilm(searchText),
+  const newTvShowAndRatingMutation =
+    trpc.vMedia.newTvShowAndRating.useMutation();
+  const tvShowSearchQuery = useQuery({
+    queryKey: ["movieDbTvShowSearch", searchText],
+    queryFn: () => searchMovieDBTvShow(searchText),
     enabled: false,
   });
 
@@ -27,29 +28,29 @@ export default function CreateFilm() {
     isLoading,
     error,
     data: response,
-  } = newFilmAndRatingMutation;
+  } = newTvShowAndRatingMutation;
 
-  const submitDisabled = !film || !rating || !userEmail;
+  const submitDisabled = !tvShow || !rating || !userEmail;
   function handleSearch() {
-    filmSearchQuery.refetch();
+    tvShowSearchQuery.refetch();
   }
 
   function handleSaveRating() {
     if (!submitDisabled) {
-      newFilmAndRatingMutation.mutate({
+      newTvShowAndRatingMutation.mutate({
         userEmail,
-        film,
+        tvShow,
         rating,
       });
     }
   }
 
-  const onSelectedFilmChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const item = filmSearchQuery.data?.results?.find(
+  const onSelectedTvShowChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const item = tvShowSearchQuery.data?.results?.find(
       (x) => x.id === +event.target.value
     );
     if (item) {
-      setFilm(item);
+      setTvShow(item);
       setRating(null);
     }
   };
@@ -58,15 +59,15 @@ export default function CreateFilm() {
     <>
       <form>
         <div className="flex-col">
-          <FilmSearch
+          <TvShowSearch
             searchText={searchText}
             setSearchText={setSearchText}
             handleSearch={handleSearch}
-            filmSearchQuery={filmSearchQuery}
-            onSelectedFilmChange={onSelectedFilmChange}
-            film={film}
+            tvShowSearchQuery={tvShowSearchQuery}
+            onSelectedTvShowChange={onSelectedTvShowChange}
+            tvShow={tvShow}
           />
-          {film?.id && (
+          {tvShow?.id && (
             <RatingPicker
               setRating={setRating}
               rating={rating}

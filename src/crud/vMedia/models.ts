@@ -16,7 +16,7 @@ export const vMediaNavigation: Navigation<vMediaRoutes> = {
 
 export const vMediaTypeText = {
   FILM: "Film",
-  TV: "Tv Show",
+  TV: "TV Show",
 } satisfies Record<VisualMediaType, string>;
 export const ZVisualMediaType = z.nativeEnum(VisualMediaType);
 
@@ -57,22 +57,22 @@ export const MovieDBFilmResponse = z.object({
 export type MovieDBFilmResponse = z.infer<typeof MovieDBFilmResponse>;
 export type MovieDBFilm = z.infer<typeof MovieDBFilm>;
 
-export const MovieDBTVShow = MovieDBBaseResponse.extend({
+export const MovieDBTvShow = MovieDBBaseResponse.extend({
   origin_country: z.array(z.string()),
   original_name: z.string(),
   first_air_date: z.string(),
   name: z.string(),
 });
 
-export const MovieDBTVShowResponse = z.object({
+export const MovieDBTvShowResponse = z.object({
   page: z.number(),
-  results: z.array(MovieDBTVShow),
+  results: z.array(MovieDBTvShow),
   total_pages: z.number(),
   total_results: z.number(),
 });
 
-export type MovieDBTVShowResponse = z.infer<typeof MovieDBTVShowResponse>;
-export type MovieDBTVShow = z.infer<typeof MovieDBTVShow>;
+export type MovieDBTvShowResponse = z.infer<typeof MovieDBTvShowResponse>;
+export type MovieDBTvShow = z.infer<typeof MovieDBTvShow>;
 
 export const CreateNewFilmAndRatingModel = z.object({
   userEmail: z.string(),
@@ -86,7 +86,7 @@ export type CreateNewFilmAndRatingModel = z.infer<
 
 export const CreateNewTvShowAndRatingModel = z.object({
   userEmail: z.string(),
-  tvShow: MovieDBTVShow,
+  tvShow: MovieDBTvShow,
   rating: z.number(),
 });
 

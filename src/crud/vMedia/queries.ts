@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MovieDBFilmResponse, MovieDBTVShowResponse } from "./models";
+import { MovieDBFilmResponse, MovieDBTvShowResponse } from "./models";
 
 const api = "https://api.themoviedb.org/3/search";
 const apiKey = process.env.NEXT_PUBLIC_MOVIE_DB_API_KEY;
@@ -15,12 +15,12 @@ export async function searchMovieDBFilm(filmSearchText: string, page = 1) {
   return data;
 }
 
-export async function searchMovieDBTVShow(tvSearchText: string, page = 1) {
+export async function searchMovieDBTvShow(tvSearchText: string, page = 1) {
   const query = GetMovieDBSearchQuery(tvSearchText, page);
-  const response = await axios.get<MovieDBTVShowResponse>(`${api}/tv?${query}`);
+  const response = await axios.get<MovieDBTvShowResponse>(`${api}/tv?${query}`);
 
   const { data } = response;
-  MovieDBTVShowResponse.parse(data);
+  MovieDBTvShowResponse.parse(data);
 
   return data;
 }

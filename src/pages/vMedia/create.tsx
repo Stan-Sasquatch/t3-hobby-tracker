@@ -4,6 +4,7 @@ import React from "react";
 import { vMediaTypeText } from "@clientCrud/vMedia/models";
 import type { VisualMediaType } from "@prisma/client";
 import CreateFilm from "@clientCrud/vMedia/components/createFilm";
+import CreateTvShow from "@clientCrud/vMedia/components/createTvShow";
 
 const Create: NextPage = () => {
   const [vMediaType, setVMediaType] = React.useState<VisualMediaType>("FILM");
@@ -30,11 +31,7 @@ const Create: NextPage = () => {
           >
             Switch to {vMediaTypeText[otherType(vMediaType)]}
           </button>
-          {vMediaType === "FILM" ? (
-            <CreateFilm />
-          ) : (
-            <>TV Search not implemented</>
-          )}
+          {vMediaType === "FILM" ? <CreateFilm /> : <CreateTvShow />}
         </div>
       </main>
     </>
