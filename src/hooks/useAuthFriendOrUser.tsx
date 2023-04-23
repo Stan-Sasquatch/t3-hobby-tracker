@@ -1,5 +1,6 @@
 import { trpc } from "@utils/trpc";
 import useAuthenticatedSession from "./useAuthenticatedSession";
+import Loading from "@clientCrud/common/components/loading";
 
 async function useAuthFriendOrUser(friendId: string) {
   const userData = trpc.users.getFriendsForUser.useQuery(friendId);
@@ -10,7 +11,7 @@ async function useAuthFriendOrUser(friendId: string) {
   }
 
   if (userData.isLoading) {
-    return <h1>...Loading</h1>;
+    return <Loading />;
   }
 
   if (!userData.data?.userFriends.map((x) => x.user_id).includes(friendId)) {

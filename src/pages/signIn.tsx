@@ -1,8 +1,8 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
-import Head from "next/head";
-import useRedirectToHomeIfAuthed from "../auth/useRedirectToHomeIfAuthed";
 import Login from "../crud/common/components/login";
+import Head from "next/head";
+import useRedirectToHomeIfAuthed from "src/hooks/useRedirectToHomeIfAuthed";
 
 const SignIn: NextPage = () => {
   const { data: sessionData } = useSession();
