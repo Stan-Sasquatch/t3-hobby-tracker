@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { trpc } from "@utils/trpc";
-import { useDefinedIdRoute } from "@utils/hooks/useDefinedIdRoute";
+import { useDefinedIdRoute } from "src/hooks/useDefinedIdRoute";
 
 const Detail: NextPage = () => {
   const { id, loading } = useDefinedIdRoute();

@@ -8,4 +8,14 @@ export const usersRouter = router({
     .query(async ({ input }) => {
       return await getRecentActivitiesForUser(input);
     }),
+  getFriendsForUser: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.user.findUnique({
+        where: { id: input },
+        include: {
+          userFriends: true,
+        },
+      });
+    }),
 });

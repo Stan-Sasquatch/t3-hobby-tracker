@@ -1,30 +1,30 @@
-import type { Book, BookRating, VMedia, VMediaRating } from "@prisma/client";
 import BookRatingsTable from "@clientCrud/books/components/bookRatingsTable";
 import VMediaRatingsTable from "@clientCrud/vMedia/components/VMediaRatingsTable";
+import { trpc } from "@utils/trpc";
+import useAuthFriendOrUser from "src/hooks/useAuthFriendOrUser";
 
 interface ProfileProps {
-  name: string;
-  bookRatings: (BookRating & {
-    book: Book;
-  })[];
-  filmRatings: (VMediaRating & {
-    vMedia: VMedia;
-  })[];
-  tvRatings: (VMediaRating & {
-    vMedia: VMedia;
-  })[];
+  id: string;
 }
 
-const Profile = ({
-  name,
-  bookRatings,
-  filmRatings,
-  tvRatings,
-}: ProfileProps) => {
+const Profile = ({ id }: ProfileProps) => {
+  useAuthFriendOrUser(id);
+  const userData = trpc.users.getRecentActivitiesForUser.useQuery(id);
+  const bookRatings = userData.data?.bookRatings ?? [];
+  const filmRatings =
+    userData.data?.vMediaRatings.filter(
+      (x) => x.vMedia.visualMediaType === "FILM"
+    ) ?? [];
+
+  const tvRatings =
+    userData.data?.vMediaRatings.filter(
+      (x) => x.vMedia.visualMediaType === "TV"
+    ) ?? [];
+
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
       <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[2rem]">
-        {`${name}'s hobby tracker`}
+        {userData.data?.name && `${userData.data.name}'s hobby tracker`}
       </h1>
       {bookRatings.length > 0 && (
         <>

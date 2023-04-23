@@ -3,7 +3,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import type { ChangeEvent } from "react";
 import React from "react";
-import useAuthenticatedSession from "@auth/useAuthenticatedSession";
+import useAuthenticatedSession from "src/hooks/useAuthenticatedSession";
 import { authorSearchGoogleVolumes } from "@clientCrud/books/queries";
 import type { GoogleVolume } from "@clientCrud/books/models";
 import { trpc } from "@utils/trpc";

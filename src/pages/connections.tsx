@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { trpc } from "../utils/trpc";
+import Link from "next/link";
 
 const Connections: NextPage = () => {
   const { isSuccess, data } = trpc.connections.getAllFriendsForUser.useQuery();
@@ -33,7 +34,12 @@ const Connections: NextPage = () => {
                             width="50"
                             height="50"
                           />
-                          <div className="mx-2.5">{x.friend.name}</div>
+                          <Link
+                            href={`connections/${x.friend_id}`}
+                            className="mx-2.5"
+                          >
+                            {x.friend.name}
+                          </Link>
                         </div>
                       </td>
                     </tr>

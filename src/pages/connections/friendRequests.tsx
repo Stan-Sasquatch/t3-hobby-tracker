@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { trpc } from "@utils/trpc";
-import useAuthenticatedSession from "@auth/useAuthenticatedSession";
+import useAuthenticatedSession from "src/hooks/useAuthenticatedSession";
 
 const FriendRequests: NextPage = () => {
   const sessionData = useAuthenticatedSession();

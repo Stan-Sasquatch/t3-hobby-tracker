@@ -1,15 +1,21 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import useAuthenticatedSession from "../hooks/useAuthenticatedSession";
+import React from "react";
+import { useDefinedIdRoute } from "src/hooks/useDefinedIdRoute";
 import Profile from "@clientCrud/home/components/profile";
 
-const Home: NextPage = () => {
-  const sessionData = useAuthenticatedSession();
-  const id = sessionData.user?.id;
+const Detail: NextPage = () => {
+  const { id, loading } = useDefinedIdRoute();
+
+  if (loading) {
+    return <h1>...Loading</h1>;
+  }
+
   return (
     <>
       <Head>
-        <title>Hobby Tracker</title>
+        <title>Connections</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         {id && <Profile id={id} />}
@@ -18,4 +24,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Detail;

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { ChangeEvent } from "react";
 import React from "react";
-import useAuthenticatedSession from "@auth/useAuthenticatedSession";
+import useAuthenticatedSession from "src/hooks/useAuthenticatedSession";
 import { searchMovieDBFilm } from "@clientCrud/vMedia/queries";
 import { trpc } from "@utils/trpc";
 import type { MovieDBFilm } from "@clientCrud/vMedia/models";
