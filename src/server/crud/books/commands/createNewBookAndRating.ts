@@ -7,8 +7,10 @@ export const CreateNewBookAndRating = async (
   model: CreateNewBookAndRatingModel
 ): Promise<ResponseModel<BookRating & { book: Book }>> => {
   const { userEmail, volume, rating } = model;
-  const author = volume?.volumeInfo?.authors?.[0];
-  const title = volume?.volumeInfo?.title;
+  const author = volume.volumeInfo.authors?.[0];
+  const googleId = volume.id;
+  const { title, subtitle, imageLinks, previewLink } = volume.volumeInfo;
+
   if (!author || !title) {
     return {
       message:
@@ -63,6 +65,10 @@ export const CreateNewBookAndRating = async (
     const data = {
       author,
       title,
+      googleId,
+      subtitle,
+      imageLink: imageLinks?.smallThumbnail,
+      previewLink,
     };
     book = await prisma.book.create({
       data,

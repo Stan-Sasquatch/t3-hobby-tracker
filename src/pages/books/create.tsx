@@ -8,6 +8,7 @@ import { authorSearchGoogleVolumes } from "@clientCrud/books/queries";
 import type { GoogleVolume } from "@clientCrud/books/models";
 import { trpc } from "@utils/trpc";
 import RatingPicker from "@clientCrud/common/components/ratingPicker";
+import Link from "next/link";
 
 const Create: NextPage = () => {
   const [authorSearchText, setAuthorSearchText] = React.useState<string>("");
@@ -147,7 +148,12 @@ const Create: NextPage = () => {
           <div className="text-center font-bold text-white">
             {isError && <p>{error.message}</p>}
             {isSuccess && response.data ? (
-              <p>{`created rating of ${response.data.rating} for book: ${response.data.book.title}`}</p>
+              <p>
+                {`created rating of ${response.data.rating} for book: `}
+                <Link className={"underline"} href={`${response.data.bookId}`}>
+                  {response.data.book.title}
+                </Link>
+              </p>
             ) : (
               <p>{response?.message}</p>
             )}

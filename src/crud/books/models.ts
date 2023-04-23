@@ -26,6 +26,13 @@ export type Book = z.infer<typeof Book>;
 const VolumeInfo = z.object({
   title: z.string().optional(),
   subtitle: z.string().optional(),
+  categories: z.array(z.string()).optional(),
+  imageLinks: z
+    .object({
+      smallThumbnail: z.string().optional(),
+    })
+    .optional(),
+  previewLink: z.string().optional(),
   authors: z.string().array().optional(),
 });
 

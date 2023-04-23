@@ -26,7 +26,11 @@ model Book {
   id          String       @id @default(uuid())
   createdAt   DateTime     @default(now())
   title       String       @db.VarChar(255)
+  subtitle    String?       @db.VarChar(255)
+  previewLink String?
   bookRatings BookRating[]
+  imageLink   String?
+  googleId    String?
   author      String
 
   @@unique([title, author])
@@ -36,8 +40,8 @@ model Book {
 model VMediaRating {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  vMedia      VMedia     @relation(fields: [vMediaId], references: [id])
-  vMediaId    String
+  vMedia    VMedia   @relation(fields: [vMediaId], references: [id])
+  vMediaId  String
   rating    Float
   user      User     @relation(fields: [userId], references: [id])
   userId    String
@@ -49,7 +53,7 @@ model VMedia {
   id              String          @id @default(uuid())
   createdAt       DateTime        @default(now())
   title           String          @db.VarChar(255)
-  vMediaRatings     VMediaRating[]
+  vMediaRatings   VMediaRating[]
   visualMediaType VisualMediaType
   releaseDate     DateTime
 
