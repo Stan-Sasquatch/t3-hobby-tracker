@@ -34,6 +34,7 @@ export const serverSchema = z.object({
 export const clientSchema = z.object({
   NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY: z.string(),
   NEXT_PUBLIC_MOVIE_DB_API_KEY: z.string(),
+  NEXT_PUBLIC_STAN_USER_ID: z.string().optional().nullable(),
 });
 
 /**
@@ -47,4 +48,5 @@ export const clientEnv = {
   NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY:
     process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY,
   NEXT_PUBLIC_MOVIE_DB_API_KEY: process.env.NEXT_PUBLIC_MOVIE_DB_API_KEY,
+  NEXT_PUBLIC_STAN_USER_ID: process.env.NEXT_PUBLIC_STAN_USER_ID,
 };

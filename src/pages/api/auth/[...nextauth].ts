@@ -21,7 +21,6 @@ export const authOptions: NextAuthOptions = {
     async signIn(message) {
       if (message.isNewUser) {
         initialiseConnections(message.user.id);
-        ``;
       }
     },
   },
