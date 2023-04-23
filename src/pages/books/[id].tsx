@@ -4,12 +4,13 @@ import React from "react";
 import { trpc } from "@utils/trpc";
 import Image from "next/image";
 import { useDefinedIdRoute } from "src/hooks/useDefinedIdRoute";
+import Loading from "@clientCrud/common/components/loading";
 
 const Detail: NextPage = () => {
   const { id, loading } = useDefinedIdRoute();
 
   if (loading) {
-    return <h1>...Loading</h1>;
+    return <Loading />;
   }
 
   const bookDetail = trpc.books.getBookById.useQuery(id);

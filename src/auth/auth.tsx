@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import Loading from "@clientCrud/common/components/loading";
 import type { WrapperProps } from "../crud/common/models";
 
 function Auth({ children }: WrapperProps): JSX.Element {
@@ -14,7 +15,7 @@ function Auth({ children }: WrapperProps): JSX.Element {
   }, [sessionData, router]);
 
   if (!sessionData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return <>{children}</>;

@@ -3,12 +3,13 @@ import Head from "next/head";
 import React from "react";
 import { useDefinedIdRoute } from "src/hooks/useDefinedIdRoute";
 import Profile from "@clientCrud/home/components/profile";
+import Loading from "@clientCrud/common/components/loading";
 
 const Detail: NextPage = () => {
   const { id, loading } = useDefinedIdRoute();
 
   if (loading) {
-    return <h1>...Loading</h1>;
+    return <Loading />;
   }
 
   return (
