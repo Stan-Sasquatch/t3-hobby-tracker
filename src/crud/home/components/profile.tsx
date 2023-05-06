@@ -2,29 +2,41 @@ import BookRatingsTable from "@clientCrud/books/components/bookRatingsTable";
 import VMediaRatingsTable from "@clientCrud/vMedia/components/VMediaRatingsTable";
 import { trpc } from "@utils/trpc";
 import useAuthFriendOrUser from "src/hooks/useAuthFriendOrUser";
+import Image from "next/image";
 
 interface ProfileProps {
   id: string;
+  imageUrl: string;
+  name: string;
 }
 
-const Profile = ({ id }: ProfileProps) => {
+const Profile = ({ id, name, imageUrl }: ProfileProps) => {
   useAuthFriendOrUser(id);
-  const userData = trpc.users.getRecentActivitiesForUser.useQuery(id);
-  const bookRatings = userData.data?.bookRatings ?? [];
+  const userActivityData = trpc.users.getRecentActivitiesForUser.useQuery(id);
+  const bookRatings = userActivityData.data?.bookRatings ?? [];
   const filmRatings =
-    userData.data?.vMediaRatings.filter(
+    userActivityData.data?.vMediaRatings.filter(
       (x) => x.vMedia.visualMediaType === "FILM"
     ) ?? [];
 
   const tvRatings =
-    userData.data?.vMediaRatings.filter(
+    userActivityData.data?.vMediaRatings.filter(
       (x) => x.vMedia.visualMediaType === "TV"
     ) ?? [];
 
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+      <div>
+        <Image
+          className="rounded-full"
+          src={imageUrl}
+          alt={name ? `${name}'s avatar ` : "user's avatar"}
+          width="50"
+          height="50"
+        />
+      </div>
       <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[2rem]">
-        {userData.data?.name && `${userData.data.name}'s hobby tracker`}
+        {name && `${name}'s hobby tracker`}
       </h1>
       {bookRatings.length > 0 && (
         <>

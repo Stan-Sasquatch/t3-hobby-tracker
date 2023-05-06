@@ -15,6 +15,27 @@ export const connectionsRouter = router({
       },
     });
   }),
+  getFriendForUser: publicProcedure
+    .input(z.string())
+    .query(({ ctx, input }) => {
+      const user_id = ctx.session?.user?.id;
+
+      if (!user_id) {
+        throw new Error("Couldn't get session info");
+      }
+
+      return ctx.prisma.friend.findUnique({
+        where: {
+          user_id_friend_id: {
+            user_id,
+            friend_id: input,
+          },
+        },
+        include: {
+          friend: true,
+        },
+      });
+    }),
   getAllFriendRequests: publicProcedure.query(({ ctx }) => {
     const id = ctx.session?.user?.id;
     return ctx.prisma.friendRequest.findMany({
