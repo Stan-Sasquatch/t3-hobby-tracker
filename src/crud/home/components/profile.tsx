@@ -54,9 +54,17 @@ const Profile = ({ id, name, imageUrl }: ProfileProps) => {
       <p className="text-2xl text-white">Recently Watched</p>
       <div className="w-3/6">
         <VMediaRatingsTable vMediaRatings={filmRatings} vMediaType={"FILM"} />
+        <Link
+          className="text-white"
+          href="/vMedia?mediaType=FILM"
+        >{`See all film ratings${name ? ` for ${name}` : ""}`}</Link>
       </div>
       <div className="w-3/6">
         <VMediaRatingsTable vMediaRatings={tvRatings} vMediaType={"TV"} />
+        <Link
+          className="text-white"
+          href="/vMedia?mediaType=TV"
+        >{`See all tv show ratings${name ? ` for ${name}` : ""}`}</Link>
       </div>
     </div>
   );
