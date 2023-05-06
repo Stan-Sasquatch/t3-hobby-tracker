@@ -42,7 +42,7 @@ export const VMediaRouter = router({
         message,
       };
     }),
-  getAllUserRatings: publicProcedure
+  getAllCurrentUserRatings: publicProcedure
     .input(ZVisualMediaType)
     .query(({ input, ctx }) => {
       return ctx.prisma.vMediaRating.findMany({
@@ -52,6 +52,27 @@ export const VMediaRouter = router({
           },
           vMedia: {
             visualMediaType: input,
+          },
+        },
+        include: { vMedia: true },
+        orderBy: { createdAt: "desc" },
+      });
+    }),
+  getAllUserRatings: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        mediaType: ZVisualMediaType,
+      })
+    )
+    .query(({ input, ctx }) => {
+      return ctx.prisma.vMediaRating.findMany({
+        where: {
+          user: {
+            id: input.userId,
+          },
+          vMedia: {
+            visualMediaType: input.mediaType,
           },
         },
         include: { vMedia: true },

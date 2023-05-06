@@ -1,10 +1,11 @@
 import BookRatingsTable from "@clientCrud/books/components/bookRatingsTable";
 import VMediaRatingsTable from "@clientCrud/vMedia/components/VMediaRatingsTable";
 import { trpc } from "@utils/trpc";
-import useAuthFriendOrUser from "src/hooks/useAuthFriendOrUser";
+import useAuthFriend from "src/hooks/useAuthFriendOrUser";
 import Image from "next/image";
 import Link from "next/link";
 import Loading from "@clientCrud/common/components/loading";
+import type { VMedia, VMediaRating, VisualMediaType } from "@prisma/client";
 
 interface ProfileProps {
   id: string;
@@ -13,7 +14,7 @@ interface ProfileProps {
 }
 
 const Profile = ({ id, name, imageUrl }: ProfileProps) => {
-  const { sessionData, isLoading } = useAuthFriendOrUser(id);
+  const { sessionData, isLoading } = useAuthFriend(id);
   const userActivityData = trpc.users.getRecentActivitiesForUser.useQuery(id);
   const isCurrentUsersProfile = id === sessionData.user?.id;
   const bookRatings = userActivityData.data?.bookRatings ?? [];
@@ -59,24 +60,55 @@ const Profile = ({ id, name, imageUrl }: ProfileProps) => {
           </div>
         </>
       )}
-
       <p className="text-2xl text-white">Recently Watched</p>
-      <div className="w-3/6">
-        <VMediaRatingsTable vMediaRatings={filmRatings} vMediaType={"FILM"} />
-        <Link
-          className="text-white"
-          href="/vMedia?mediaType=FILM"
-        >{`See all film ratings${name ? ` for ${name}` : ""}`}</Link>
-      </div>
-      <div className="w-3/6">
-        <VMediaRatingsTable vMediaRatings={tvRatings} vMediaType={"TV"} />
-        <Link
-          className="text-white"
-          href="/vMedia?mediaType=TV"
-        >{`See all tv show ratings${name ? ` for ${name}` : ""}`}</Link>
-      </div>
+      <VMediaRatingsDisplay
+        ratings={filmRatings}
+        isCurrentUsersProfile={isCurrentUsersProfile}
+        id={id}
+        name={name}
+        mediaType={"FILM"}
+      />
+      <VMediaRatingsDisplay
+        ratings={tvRatings}
+        isCurrentUsersProfile={isCurrentUsersProfile}
+        id={id}
+        name={name}
+        mediaType={"TV"}
+      />
     </div>
   );
 };
 
 export default Profile;
+
+function VMediaRatingsDisplay({
+  ratings,
+  isCurrentUsersProfile,
+  id,
+  name,
+  mediaType,
+}: {
+  ratings: (VMediaRating & {
+    vMedia: VMedia;
+  })[];
+  isCurrentUsersProfile: boolean;
+  id: string;
+  name: string;
+  mediaType: VisualMediaType;
+}) {
+  return (
+    <div className="w-3/6">
+      <VMediaRatingsTable vMediaRatings={ratings} vMediaType={mediaType} />
+      <Link
+        className="text-white"
+        href={
+          isCurrentUsersProfile
+            ? `/vMedia?mediaType=${mediaType}`
+            : `/connections/${id}/vMedia?mediaType=${mediaType}`
+        }
+      >{`See all ${mediaType.toLocaleLowerCase()} ratings${
+        name ? ` for ${name}` : ""
+      }`}</Link>
+    </div>
+  );
+}
