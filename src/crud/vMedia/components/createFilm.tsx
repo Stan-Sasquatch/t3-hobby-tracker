@@ -1,12 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import type { ChangeEvent } from "react";
 import React from "react";
 import useAuthenticatedSession from "src/hooks/useAuthenticatedSession";
-import { searchMovieDBFilm } from "@clientCrud/vMedia/queries";
 import { trpc } from "@utils/trpc";
-import type { MovieDBFilm } from "@clientCrud/vMedia/models";
 import FilmSearch from "@clientCrud/vMedia/components/filmSearch";
 import RatingPicker from "@clientCrud/common/components/ratingPicker";
+import type { MovieDBFilm } from "@serverCrud/movieDb/models";
 
 export default function CreateFilm() {
   const [searchText, setSearchText] = React.useState<string>("");
@@ -15,12 +13,11 @@ export default function CreateFilm() {
   const sessionData = useAuthenticatedSession();
   const userEmail = sessionData.user?.email;
   const newFilmAndRatingMutation = trpc.vMedia.newFilmAndRating.useMutation();
-  const filmSearchQuery = useQuery({
-    queryKey: ["movieDbFilmSearch", searchText],
-    queryFn: () => searchMovieDBFilm(searchText),
-    enabled: false,
-  });
 
+  const filmSearchQuery = trpc.movieDbMedia.searchMovieDbFilm.useQuery(
+    { searchText },
+    { enabled: false }
+  );
   const {
     isError,
     isSuccess,

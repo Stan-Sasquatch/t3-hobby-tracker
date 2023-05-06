@@ -1,5 +1,6 @@
 import axios from "axios";
 import { googleVolumeQueryTypes, GoogleVolumesResponse } from "../models";
+import { env } from "@env/server.mjs";
 
 export async function SearchGoogleVolumes({
   volumeSearchText,
@@ -8,7 +9,7 @@ export async function SearchGoogleVolumes({
   volumeSearchText: string;
   authorSearchText: string;
 }) {
-  const googleApiKey = process.env.GOOGLE_BOOKS_API_KEY;
+  const googleApiKey = env.GOOGLE_BOOKS_API_KEY;
   const api = "https://www.googleapis.com/books/v1";
 
   const query = `volumes?q=${volumeSearchText}+${googleVolumeQueryTypes.author}:${authorSearchText}&key=${googleApiKey}`;

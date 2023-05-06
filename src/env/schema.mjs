@@ -25,6 +25,7 @@ export const serverSchema = z.object({
   GITHUB_CLIENT_SECRET: z.string(),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
+  MOVIE_DB_API_KEY: z.string(),
 });
 
 /**
@@ -33,7 +34,6 @@ export const serverSchema = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
-  NEXT_PUBLIC_MOVIE_DB_API_KEY: z.string(),
   NEXT_PUBLIC_STAN_USER_ID: z.string().optional().nullable(),
 });
 
@@ -45,6 +45,5 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
-  NEXT_PUBLIC_MOVIE_DB_API_KEY: process.env.NEXT_PUBLIC_MOVIE_DB_API_KEY,
   NEXT_PUBLIC_STAN_USER_ID: process.env.NEXT_PUBLIC_STAN_USER_ID,
 };

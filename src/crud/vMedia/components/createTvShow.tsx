@@ -1,12 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import type { ChangeEvent } from "react";
 import React from "react";
 import useAuthenticatedSession from "src/hooks/useAuthenticatedSession";
-import { searchMovieDBTvShow } from "@clientCrud/vMedia/queries";
 import { trpc } from "@utils/trpc";
-import type { MovieDBTvShow } from "@clientCrud/vMedia/models";
 import TvShowSearch from "@clientCrud/vMedia/components/tvShowSearch";
 import RatingPicker from "@clientCrud/common/components/ratingPicker";
+import type { MovieDBTvShow } from "@serverCrud/movieDb/models";
 
 export default function CreateTvShow() {
   const [searchText, setSearchText] = React.useState<string>("");
@@ -16,11 +14,11 @@ export default function CreateTvShow() {
   const userEmail = sessionData.user?.email;
   const newTvShowAndRatingMutation =
     trpc.vMedia.newTvShowAndRating.useMutation();
-  const tvShowSearchQuery = useQuery({
-    queryKey: ["movieDbTvShowSearch", searchText],
-    queryFn: () => searchMovieDBTvShow(searchText),
-    enabled: false,
-  });
+
+  const tvShowSearchQuery = trpc.movieDbMedia.searchMovieDbTvShow.useQuery(
+    { searchText },
+    { enabled: false }
+  );
 
   const {
     isError,
