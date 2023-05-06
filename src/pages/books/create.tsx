@@ -1,14 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import { type NextPage } from "next";
 import Head from "next/head";
 import type { ChangeEvent } from "react";
 import React from "react";
 import useAuthenticatedSession from "src/hooks/useAuthenticatedSession";
-import { authorSearchGoogleVolumes } from "@clientCrud/books/queries";
-import type { GoogleVolume } from "@clientCrud/books/models";
 import { trpc } from "@utils/trpc";
 import RatingPicker from "@clientCrud/common/components/ratingPicker";
 import Link from "next/link";
+import type { GoogleVolume } from "@serverCrud/googleVolumes/models";
 
 const Create: NextPage = () => {
   const [authorSearchText, setAuthorSearchText] = React.useState<string>("");
@@ -18,12 +16,14 @@ const Create: NextPage = () => {
   const sessionData = useAuthenticatedSession();
   const userEmail = sessionData.user?.email;
   const newBookAndRatingMutation = trpc.books.newBookAndRating.useMutation();
-  const googleVolumeSearch = useQuery({
-    queryKey: ["googleVolumes", volumeSearchText, authorSearchText],
-    queryFn: () =>
-      authorSearchGoogleVolumes(volumeSearchText, authorSearchText),
-    enabled: false,
-  });
+
+  const googleVolumeSearch = trpc.googleVolumes.searchGoogleVolumes.useQuery(
+    {
+      volumeSearchText,
+      authorSearchText,
+    },
+    { enabled: false }
+  );
 
   const {
     isError,
