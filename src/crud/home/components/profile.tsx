@@ -4,6 +4,7 @@ import { trpc } from "@utils/trpc";
 import useAuthFriendOrUser from "src/hooks/useAuthFriendOrUser";
 import Image from "next/image";
 import Link from "next/link";
+import Loading from "@clientCrud/common/components/loading";
 
 interface ProfileProps {
   id: string;
@@ -12,8 +13,9 @@ interface ProfileProps {
 }
 
 const Profile = ({ id, name, imageUrl }: ProfileProps) => {
-  useAuthFriendOrUser(id);
+  const { sessionData, isLoading } = useAuthFriendOrUser(id);
   const userActivityData = trpc.users.getRecentActivitiesForUser.useQuery(id);
+  const isCurrentUsersProfile = id === sessionData.user?.id;
   const bookRatings = userActivityData.data?.bookRatings ?? [];
   const filmRatings =
     userActivityData.data?.vMediaRatings.filter(
@@ -24,6 +26,10 @@ const Profile = ({ id, name, imageUrl }: ProfileProps) => {
     userActivityData.data?.vMediaRatings.filter(
       (x) => x.vMedia.visualMediaType === "TV"
     ) ?? [];
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
@@ -44,9 +50,12 @@ const Profile = ({ id, name, imageUrl }: ProfileProps) => {
           <p className="text-2xl text-white">Recently Read</p>
           <div className="w-3/6">
             <BookRatingsTable bookRatings={bookRatings} />
-            <Link className="text-white" href="/books">{`See all book ratings${
-              name ? ` for ${name}` : ""
-            }`}</Link>
+            <Link
+              className="text-white"
+              href={
+                isCurrentUsersProfile ? "/books" : `/connections/${id}/books`
+              }
+            >{`See all book ratings${name ? ` for ${name}` : ""}`}</Link>
           </div>
         </>
       )}

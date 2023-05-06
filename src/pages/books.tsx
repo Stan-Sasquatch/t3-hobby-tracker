@@ -5,7 +5,7 @@ import BookRatingsTable from "../crud/books/components/bookRatingsTable";
 import { trpc } from "../utils/trpc";
 
 const Books: NextPage = () => {
-  const allBookRatings = trpc.books.getAllUserRatings.useQuery();
+  const allBookRatings = trpc.books.getAllCurrentUserRatings.useQuery();
 
   return (
     <>

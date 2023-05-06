@@ -13,7 +13,7 @@ export const booksRouter = router({
         message,
       };
     }),
-  getAllUserRatings: publicProcedure.query(({ ctx }) => {
+  getAllCurrentUserRatings: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.bookRating.findMany({
       where: {
         user: {
@@ -24,6 +24,19 @@ export const booksRouter = router({
       orderBy: { createdAt: "desc" },
     });
   }),
+  getAllUserRatings: publicProcedure
+    .input(z.string())
+    .query(({ ctx, input }) => {
+      return ctx.prisma.bookRating.findMany({
+        where: {
+          user: {
+            id: input,
+          },
+        },
+        include: { book: true },
+        orderBy: { createdAt: "desc" },
+      });
+    }),
   getBookById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.book.findUnique({
       where: { id: input },

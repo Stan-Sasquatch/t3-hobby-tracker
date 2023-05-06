@@ -1,23 +1,20 @@
 import { trpc } from "@utils/trpc";
 import useAuthenticatedSession from "./useAuthenticatedSession";
-import Loading from "@clientCrud/common/components/loading";
 
-async function useAuthFriendOrUser(friendId: string) {
+function useAuthFriendOrUser(friendId: string) {
   const userData = trpc.users.getFriendsForUser.useQuery(friendId);
   const sessionData = useAuthenticatedSession();
-
   if (friendId === sessionData.user?.id) {
-    return sessionData;
+    return { sessionData, isLoading: false };
   }
 
-  if (userData.isLoading) {
-    return <Loading />;
-  }
-
-  if (!userData.data?.userFriends.map((x) => x.user_id).includes(friendId)) {
+  if (
+    !userData.isLoading &&
+    !userData.data?.userFriends.map((x) => x.user_id).includes(friendId)
+  ) {
     throw new Error("Not authorised to view this route");
   }
 
-  return sessionData;
+  return { sessionData, isLoading: userData.isLoading };
 }
 export default useAuthFriendOrUser;
