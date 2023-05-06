@@ -2,8 +2,9 @@ import { trpc } from "@utils/trpc";
 import useAuthenticatedSession from "./useAuthenticatedSession";
 
 function useAuthFriendOrUser(friendId: string) {
-  const userData = trpc.users.getFriendsForUser.useQuery(friendId);
+  const userData = trpc.users.getFriendsForUser.useQuery();
   const sessionData = useAuthenticatedSession();
+
   if (friendId === sessionData.user?.id) {
     return { sessionData, isLoading: false };
   }
