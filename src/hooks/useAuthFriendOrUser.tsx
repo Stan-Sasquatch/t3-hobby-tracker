@@ -1,12 +1,12 @@
 import { trpc } from "@utils/trpc";
 import useAuthenticatedSession from "./useAuthenticatedSession";
 
-function useAuthFriend(friendId: string) {
+function useAuthFriendOrUser(friendId: string) {
   const userData = trpc.users.getFriendsForUser.useQuery();
   const sessionData = useAuthenticatedSession();
 
   if (friendId === sessionData.user?.id) {
-    throw new Error("Route does not exist");
+    return { sessionData, isLoading: false };
   }
 
   if (
@@ -18,4 +18,4 @@ function useAuthFriend(friendId: string) {
 
   return { sessionData, isLoading: userData.isLoading };
 }
-export default useAuthFriend;
+export default useAuthFriendOrUser;

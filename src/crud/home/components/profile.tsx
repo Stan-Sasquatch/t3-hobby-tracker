@@ -1,7 +1,7 @@
 import BookRatingsTable from "@clientCrud/books/components/bookRatingsTable";
 import VMediaRatingsTable from "@clientCrud/vMedia/components/VMediaRatingsTable";
 import { trpc } from "@utils/trpc";
-import useAuthFriend from "src/hooks/useAuthFriendOrUser";
+import useAuthFriendOrUser from "src/hooks/useAuthFriendOrUser";
 import Image from "next/image";
 import Link from "next/link";
 import Loading from "@clientCrud/common/components/loading";
@@ -14,7 +14,7 @@ interface ProfileProps {
 }
 
 const Profile = ({ id, name, imageUrl }: ProfileProps) => {
-  const { sessionData, isLoading } = useAuthFriend(id);
+  const { sessionData, isLoading } = useAuthFriendOrUser(id);
   const userActivityData = trpc.users.getRecentActivitiesForUser.useQuery(id);
   const isCurrentUsersProfile = id === sessionData.user?.id;
   const bookRatings = userActivityData.data?.bookRatings ?? [];

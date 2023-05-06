@@ -40,7 +40,10 @@ const VMedia: NextPage = () => {
             mediaType={mediaType}
             onToggleMediaType={() =>
               router.replace({
-                query: { mediaType: mediaType === "FILM" ? "TV" : "FILM" },
+                query: {
+                  ...router.query,
+                  mediaType: mediaType === "FILM" ? "TV" : "FILM",
+                },
               })
             }
           />

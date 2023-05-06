@@ -5,11 +5,11 @@ import React from "react";
 import BookRatingsTable from "@clientCrud/books/components/bookRatingsTable";
 import { useDefinedIdRoute } from "src/hooks/useDefinedIdRoute";
 import Loading from "@clientCrud/common/components/loading";
-import useAuthFriend from "src/hooks/useAuthFriendOrUser";
+import useAuthFriendOrUser from "src/hooks/useAuthFriend";
 
 const FriendBooks: NextPage = () => {
   const { id, loading } = useDefinedIdRoute();
-  useAuthFriend(id ?? "");
+  useAuthFriendOrUser(id ?? "");
   const friendQuery = trpc.connections.getFriendForUser.useQuery(id ?? "");
   const allBookRatings = trpc.books.getAllUserRatings.useQuery(id ?? "");
   const name = friendQuery.data?.friend.name;
