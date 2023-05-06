@@ -3,6 +3,7 @@ import VMediaRatingsTable from "@clientCrud/vMedia/components/VMediaRatingsTable
 import { trpc } from "@utils/trpc";
 import useAuthFriendOrUser from "src/hooks/useAuthFriendOrUser";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ProfileProps {
   id: string;
@@ -43,6 +44,9 @@ const Profile = ({ id, name, imageUrl }: ProfileProps) => {
           <p className="text-2xl text-white">Recently Read</p>
           <div className="w-3/6">
             <BookRatingsTable bookRatings={bookRatings} />
+            <Link className="text-white" href="/books">{`See all book ratings${
+              name ? ` for ${name}` : ""
+            }`}</Link>
           </div>
         </>
       )}

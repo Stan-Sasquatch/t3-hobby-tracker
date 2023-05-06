@@ -1,13 +1,17 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import { vMediaTypeText } from "@clientCrud/vMedia/models";
+import { ZVisualMediaType, vMediaTypeText } from "@clientCrud/vMedia/models";
 import type { VisualMediaType } from "@prisma/client";
 import CreateFilm from "@clientCrud/vMedia/components/createFilm";
 import CreateTvShow from "@clientCrud/vMedia/components/createTvShow";
+import { useRouter } from "next/router";
 
 const Create: NextPage = () => {
-  const [vMediaType, setVMediaType] = React.useState<VisualMediaType>("FILM");
+  const router = useRouter();
+  const vMediaType = ZVisualMediaType.parse(
+    router.query["mediaType"] ?? "FILM"
+  );
   const otherType = (currentType: VisualMediaType) =>
     currentType === "FILM" ? "TV" : "FILM";
   const mediaTypeText = vMediaTypeText[vMediaType];
@@ -26,7 +30,7 @@ const Create: NextPage = () => {
           <button
             className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
             onClick={() =>
-              setVMediaType((prevMediaType) => otherType(prevMediaType))
+              router.replace({ query: { mediaType: otherType(vMediaType) } })
             }
           >
             Switch to {vMediaTypeText[otherType(vMediaType)]}
