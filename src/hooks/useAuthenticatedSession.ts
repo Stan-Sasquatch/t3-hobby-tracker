@@ -7,10 +7,6 @@ function useAuthenticatedSession() {
     throw new Error("Session not authenticated");
   }
 
-  if (!sessionData?.user) {
-    throw new Error("User not found");
-  }
-
   return sessionData;
 }
 export default useAuthenticatedSession;
